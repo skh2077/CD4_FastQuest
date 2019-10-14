@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00314d"
+    tools:context=".card_selected">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="257dp"
+        android:layout_height="186dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="178dp"
+        android:layout_marginEnd="77dp"
+        android:layout_marginBottom="367dp"
+        android:contentDescription="@string/act_pic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/NOTaImage"
+        android:layout_width="252dp"
+        android:layout_height="116dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="373dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="242dp"
+        android:contentDescription="@string/app_name"
+        android:tint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/background_light" />
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="100dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="395dp"
+        android:layout_marginEnd="217dp"
+        android:layout_marginBottom="310dp"
+        android:text="@string/title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Detail"
+        android:layout_width="166dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="434dp"
+        android:layout_marginEnd="151dp"
+        android:layout_marginBottom="254dp"
+        android:text="@string/detail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/MapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="266dp"
+        android:layout_marginTop="396dp"
+        android:layout_marginEnd="97dp"
+        android:layout_marginBottom="292dp"
+        android:backgroundTint="#00FFFDFD"
+        android:contentDescription="@string/map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/map_marker" />
+
+    <Button
+        android:id="@+id/Reload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginEnd="200dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/reload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <Button
+        android:id="@+id/Start"
+        android:layout_width="115dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="503dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="163dp"
+        android:text="@string/start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
