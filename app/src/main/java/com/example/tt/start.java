@@ -7,19 +7,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class card_selected extends AppCompatActivity {
-    Button reloadButton;
-
+public class start extends AppCompatActivity {
+    Button startButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_selected);
+        setContentView(R.layout.activity_start);
 
-        reloadButton = (Button)findViewById(R.id.Reload);
-        reloadButton.setOnClickListener(new View.OnClickListener() {
+        startButton = findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),CardInfo.class));
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
     }

@@ -67,7 +67,7 @@
         android:layout_marginBottom="632dp"
         android:text="@string/fast_quest"
         android:textColor="#f8f7fa"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +106,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/moimButton"
         android:layout_width="60dp"
         android:layout_height="54dp"
         android:layout_marginStart="325dp"
@@ -114,7 +114,7 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="100dp"
         android:clickable="true"
-        app:backgroundTint="#00314d"
+        app:backgroundTint="#8B9DFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,5 +138,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <ImageButton
+        android:id="@+id/profileButton"
+        android:layout_width="39dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="329dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginBottom="600dp"
+        android:backgroundTint="#333238"
+        android:contentDescription="@string/profile"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.528"
+        app:srcCompat="@drawable/account_circle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
