@@ -21,11 +21,9 @@
     <string name="detail">Detail</string>
     <string name="map">map</string>
     <string name="info">\?</string>
-<<<<<<< HEAD
     <string name="cycle">자전거</string>
     <string name="start_goal">출발지, 목적지</string>
     <string name="ing">진행중</string>
-=======
     <string name="profile">profile</string>
     <string name="back">뒤로</string>
     <string name="pre_cat_kor">관심 카테고리 수정</string>
@@ -58,5 +56,4 @@
     <string name="quest">s\ne\nu\nQ</string>
     <string name="start_message">Press to Go</string>
 
->>>>>>> ui
 </resources>

@@ -45,8 +45,8 @@ public class CardInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         User user = new User(20150101, "nh7881@naver.com", "South", 777, 20, 15, 0, 23, 19970219, 0);
         Vector<String> vprecat = new Vector<String>();
-        pre_cat pre_cat1 = new pre_cat(20150101, "헬스");
-        pre_cat pre_cat2 = new pre_cat(20150101, "볼링");
+        simple_pre_cat pre_cat1 = new simple_pre_cat(20150101, "헬스");
+        simple_pre_cat pre_cat2 = new simple_pre_cat(20150101, "볼링");
         vprecat.add(pre_cat1.getCat_name());
         vprecat.add(pre_cat2.getCat_name());
         //추천 알고리즘 옹작할 것!

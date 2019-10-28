@@ -9,9 +9,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -84,6 +86,8 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
 
 
     public void currentLocation(View view) {
+        Button curpo = (Button)findViewById(R.id.markerbutton);
+        curpo.setBackgroundColor(Color.RED);
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
             return;

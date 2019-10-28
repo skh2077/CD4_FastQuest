@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class card_selected extends AppCompatActivity {
     Button reloadButton;
-
+    Button start;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,5 +22,14 @@ public class card_selected extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),CardInfo.class));
             }
         });
+
+        start = (Button)findViewById(R.id.Start);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),map.class));
+            }
+        });
+
     }
 }

@@ -54,6 +54,7 @@
         app:srcCompat="@android:color/background_light" />
 
     <Button
+        android:id="@+id/markerbutton"
         android:layout_width="71dp"
         android:layout_height="57dp"
         android:layout_marginStart="332dp"
