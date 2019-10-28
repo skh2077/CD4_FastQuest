@@ -53,7 +53,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/card2"
         android:layout_width="70dp"
         android:layout_height="170dp"
         android:layout_marginStart="273dp"
@@ -66,7 +66,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/card3"
         android:layout_width="70dp"
         android:layout_height="170dp"
         android:layout_marginStart="170dp"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/card4"
         android:layout_width="70dp"
         android:layout_height="170dp"
         android:layout_marginStart="60dp"
@@ -92,7 +92,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/card5"
         android:layout_width="70dp"
         android:layout_height="170dp"
         android:layout_marginStart="273dp"

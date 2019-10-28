@@ -7,21 +7,103 @@
     android:background="#00314d"
     tools:context=".map">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:background="#333238"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/activity_text"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="122dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="122dp"
+        android:layout_marginBottom="632dp"
+        android:text="@string/cycle"
+        android:textColor="#f8f7fa"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <fragment
         android:id="@+id/googleMap"
         class="com.google.android.gms.maps.MapFragment"
-        android:layout_width="300dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="200dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="70dp"
+        android:layout_width="331dp"
+        android:layout_height="350dp"
         android:tint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/background_light"
-        />
+        app:layout_constraintVertical_bias="0.664"
+        app:srcCompat="@android:color/background_light" />
+
+    <Button
+        android:layout_width="71dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="332dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="122dp"
+        android:layout_marginBottom="632dp"
+        android:background="@drawable/map_marker"
+        android:onClick="currentLocation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/Switch1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="79dp"
+        android:layout_marginBottom="41dp"
+        android:text="@string/start_goal"
+        android:textColor="#FFBB00"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/googleMap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="33dp"
+        android:background="#00D8FF"
+        android:padding="15dp"
+        android:text="@string/ing"
+        android:textColor="#F6F6F6"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/googleMap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
