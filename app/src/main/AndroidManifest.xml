@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tt">
 
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+=======
+>>>>>>> ui
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
@@ -27,16 +31,34 @@
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".MainActivity">
+=======
+        <activity android:name=".start">
+>>>>>>> ui
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="" />
+=======
+        <activity android:name=".moim" />
+        <activity android:name=".review_check" />
+        <activity android:name=".profile_detail" />
+        <activity android:name=".pre_cat" />
+        <activity android:name=".profile" />
+        <activity android:name=".card_selected" />
+        <activity android:name=".info" />
+        <activity android:name=".CardInfo" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".MainActivity"></activity>
+>>>>>>> ui
     </application>
 
 </manifest>

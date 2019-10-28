@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00314d"
+    tools:context=".pre_cat">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar5"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginBottom="650dp"
+        android:background="#333238"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="46dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="349dp"
+        android:backgroundTint="#333238"
+        android:contentDescription="@string/back"
+        android:scaleX="1"
+        android:scaleY="1"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.346"
+        app:srcCompat="@drawable/arrow_left_thick" />
+
+    <TextView
+        android:id="@+id/bar_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="122dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="122dp"
+        android:text="@string/pre_cat_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ToggleButton
+        android:id="@+id/pre_Travel"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/pre_travel"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintStart_toEndOf="@+id/toolbar5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Sports"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/pre_sports"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toStartOf="@+id/pre_Movie"
+        app:layout_constraintStart_toEndOf="@+id/pre_Travel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Movie"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/pre_movie"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Book"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="220dp"
+        android:background="@drawable/pre_book"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Dance"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="220dp"
+        android:background="@drawable/pre_dance"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toStartOf="@+id/pre_Volunteer"
+        app:layout_constraintStart_toEndOf="@+id/pre_Book"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Volunteer"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/pre_volunteer"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Meet"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="320dp"
+        android:background="@drawable/pre_meet"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Food"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="320dp"
+        android:background="@drawable/pre_food"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toStartOf="@+id/pre_Music"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toEndOf="@+id/pre_Meet"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Music"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="320dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/pre_music"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Language"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="420dp"
+        android:layout_marginEnd="270dp"
+        android:background="@drawable/pre_language"
+        android:checked="true"
+        android:fillColor="#ffffff"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Camera"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="420dp"
+        android:background="@drawable/pre_camera"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toStartOf="@+id/pre_Art"
+        app:layout_constraintStart_toEndOf="@+id/pre_Language"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Art"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="420dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/pre_art"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/pre_Game"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="520dp"
+        android:background="@drawable/pre_game"
+        android:checked="true"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:textSize="0sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/pre_travel_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:text="@string/pre_travel_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Travel" />
+
+    <TextView
+        android:id="@+id/pre_book_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:text="@string/pre_book_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Book" />
+
+    <TextView
+        android:id="@+id/pre_meet_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:text="@string/pre_meet_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Meet" />
+
+    <TextView
+        android:id="@+id/pre_language_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="40dp"
+        android:text="@string/pre_language_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Language" />
+
+    <TextView
+        android:id="@+id/pre_sports_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:text="@string/pre_sports_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pre_movie_text"
+        app:layout_constraintStart_toEndOf="@+id/pre_travel_text"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Sports" />
+
+    <TextView
+        android:id="@+id/pre_dance_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:text="@string/pre_dance_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pre_volnteer_text"
+        app:layout_constraintStart_toEndOf="@+id/pre_book_text"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Dance" />
+
+    <TextView
+        android:id="@+id/pre_food_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:text="@string/pre_food_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pre_music_text"
+        app:layout_constraintStart_toEndOf="@+id/pre_meet_text"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Food" />
+
+    <TextView
+        android:id="@+id/pre_camera_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:text="@string/pre_camera_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/pre_art_text"
+        app:layout_constraintStart_toEndOf="@+id/pre_language_text"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Camera" />
+
+    <TextView
+        android:id="@+id/pre_game_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="168dp"
+        android:text="@string/pre_game_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Game" />
+
+    <TextView
+        android:id="@+id/pre_movie_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/pre_movie_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Movie" />
+
+    <TextView
+        android:id="@+id/pre_volnteer_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/pre_volunteer_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Volunteer" />
+
+    <TextView
+        android:id="@+id/pre_music_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/pre_music_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Music" />
+
+    <TextView
+        android:id="@+id/pre_art_text"
+        android:layout_width="90dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/pre_art_kor"
+        android:textColor="#f8f7fa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pre_Art" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/save_kor"
+        android:onClick="OnClickHandler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintStart_toEndOf="@+id/bar_text2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

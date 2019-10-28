@@ -9,7 +9,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="fast_quest">Fast Quest</string>
+    <string name="fast_quest">FAST QUEST</string>
     <string name="ButtonName">GO</string>
     <string name="card_selection">Card Selection</string>
     <string name="reload">Reload</string>
@@ -21,7 +21,42 @@
     <string name="detail">Detail</string>
     <string name="map">map</string>
     <string name="info">\?</string>
+<<<<<<< HEAD
     <string name="cycle">자전거</string>
     <string name="start_goal">출발지, 목적지</string>
     <string name="ing">진행중</string>
+=======
+    <string name="profile">profile</string>
+    <string name="back">뒤로</string>
+    <string name="pre_cat_kor">관심 카테고리 수정</string>
+    <string name="profile_kor">개인정보</string>
+    <string name="review_chec_kor">작성 리뷰 확인</string>
+    <string name="pre_travel_kor">여행/아웃도어</string>
+    <string name="pre_book_kor">인문학/책/글</string>
+    <string name="pre_meet_kor">사교/인맥</string>
+    <string name="pre_language_kor">외국/언어</string>
+    <string name="pre_sports_kor">운동/스포츠</string>
+    <string name="pre_dance_kor">댄스/무용</string>
+    <string name="pre_food_kor">요리/제조</string>
+    <string name="pre_camera_kor">사진/영상</string>
+    <string name="pre_game_kor">게임/오락</string>
+    <string name="pre_movie_kor">문화/공연/축제</string>
+    <string name="pre_volunteer_kor">봉사활동</string>
+    <string name="pre_music_kor">음악/악기</string>
+    <string name="pre_art_kor">공예/만들기</string>
+    <string name="null_string">\n\n</string>
+    <string name="name_kor">이름</string>
+    <string name="age_kor">나이</string>
+    <string name="gender_kor">성별</string>
+    <string name="sample">00</string>
+    <string name="save_kor">저장</string>
+    <string name="popup_kor">팝업창</string>
+    <string name="cancel_kor">취소</string>
+    <string name="multi_kor">모임/단체</string>
+    <string name="moim_kor">작성된 리뷰</string>
+    <string name="fast">F\na\ns</string>
+    <string name="quest">s\ne\nu\nQ</string>
+    <string name="start_message">Press to Go</string>
+
+>>>>>>> ui
 </resources>
