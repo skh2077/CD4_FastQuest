@@ -4,23 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00314d"
+    android:background="#efe9cc"
     tools:context=".start">
-
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="#00FFFFFF"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/quest"
-        android:textColor="#FFFFFF"
         android:textSize="50sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fast"
-        android:textColor="#FFFFFF"
         android:textSize="50sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/cross1"
@@ -46,10 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="70dp"
-        android:rotation="3"
         android:text="@string/start_message"
-        android:textColor="#CBFFFFFF"
-        android:textSize="30sp"
+        android:textSize="15sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,5 +64,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.37" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="#00FFFFFF"
+        android:background="@android:color/transparent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

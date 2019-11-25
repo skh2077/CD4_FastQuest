@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00314d"
+    android:background="#efe9cc"
     tools:context=".card_selected">
 
     <ImageView
@@ -31,7 +31,7 @@
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="242dp"
         android:contentDescription="@string/app_name"
-        android:tint="#00FFFFFF"
+        android:tint="#F8F8EA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +76,7 @@
         android:layout_marginBottom="292dp"
         android:backgroundTint="#00FFFDFD"
         android:contentDescription="@string/map"
+        android:onClick="openmap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,28 +87,23 @@
         android:id="@+id/Reload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginEnd="200dp"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/reload"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintTop_toBottomOf="@+id/Start" />
 
     <Button
         android:id="@+id/Start"
         android:layout_width="115dp"
         android:layout_height="65dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="503dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="163dp"
-        android:text="@string/start"
+        android:layout_marginBottom="120dp"
+        android:backgroundTint="#f6cd90"
+        android:text="@string/prove"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/NOTaImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,21 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00314d"
+    android:background="#efe9cc"
     tools:context=".CardInfo">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:layout_marginBottom="650dp"
-        android:background="#333238"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/bar_text"
@@ -29,10 +17,8 @@
         android:layout_marginEnd="122dp"
         android:layout_marginBottom="632dp"
         android:gravity="center"
-        android:text="@string/card_selection"
-        android:textColor="#f8f7fa"
-        android:textSize="40sp"
-        android:textStyle="bold"
+        android:text="카드를 선택하세요"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,38 +27,30 @@
 
     <Button
         android:id="@+id/card1"
-        android:layout_width="70dp"
-        android:layout_height="170dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="289dp"
-        android:layout_marginBottom="377dp"
+        android:layout_width="100dp"
+        android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
 
     <Button
         android:id="@+id/card2"
-        android:layout_width="70dp"
-        android:layout_height="170dp"
-        android:layout_marginStart="273dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="377dp"
+        android:layout_width="100dp"
+        android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
 
     <Button
         android:id="@+id/card3"
-        android:layout_width="70dp"
-        android:layout_height="170dp"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="318dp"
-        android:layout_marginEnd="171dp"
-        android:layout_marginBottom="243dp"
+        android:layout_width="100dp"
+        android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,29 +58,25 @@
 
     <Button
         android:id="@+id/card4"
-        android:layout_width="70dp"
-        android:layout_height="170dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="419dp"
-        android:layout_marginEnd="281dp"
-        android:layout_marginBottom="142dp"
+        android:layout_width="100dp"
+        android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
 
     <Button
         android:id="@+id/card5"
-        android:layout_width="70dp"
-        android:layout_height="170dp"
-        android:layout_marginStart="273dp"
-        android:layout_marginTop="419dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="142dp"
+        android:layout_width="100dp"
+        android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
 
     <Button
         android:id="@+id/Reload"
@@ -112,6 +86,7 @@
         android:layout_marginEnd="200dp"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/reload"
+        android:onClick="reload"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

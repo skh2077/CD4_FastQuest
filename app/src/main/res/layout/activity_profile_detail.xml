@@ -4,21 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00314d"
+    android:background="#efe9cc"
     tools:context=".profile_detail">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar6"
-        android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:layout_marginBottom="650dp"
-        android:background="#333238"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/bar_text4"
@@ -29,7 +17,6 @@
         android:layout_marginEnd="122dp"
         android:layout_marginBottom="632dp"
         android:text="@string/profile_kor"
-        android:textColor="#f8f7fa"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,31 +27,30 @@
 
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_width="46dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="349dp"
-        android:backgroundTint="#333238"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#00333238"
         android:contentDescription="@string/back"
         android:scaleX="1"
-        android:scaleY="1"
+        android:scaleY="2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.346"
-        app:srcCompat="@drawable/arrow_left_thick" />
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_back" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageView"
         android:layout_width="300dp"
         android:layout_height="440dp"
         android:contentDescription="@string/null_string"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar6"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/colorBackgroundFloating" />
 
     <TextView
@@ -72,12 +58,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="40dp"
         android:text="@string/name_kor"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameinput"
@@ -151,7 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:text="@string/accept"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

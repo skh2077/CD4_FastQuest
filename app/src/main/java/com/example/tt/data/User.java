@@ -1,20 +1,72 @@
-package com.example.tt;
+package com.example.tt.data;
+
+import android.graphics.Bitmap;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class User {
 
-    private int user_id;
+    private String user_id;
+    private LatLng user_location;
     private String email;
+
+    public boolean getismoim() {
+        return ismoim;
+    }
+
+    public void setIsmoim(boolean ismoim) {
+        this.ismoim = ismoim;
+    }
+
+    boolean ismoim = false;
+
+    public Activity getUser_act() {
+        return user_act;
+    }
+
+    public void setUser_act(Activity user_act) {
+        this.user_act = user_act;
+    }
+
+    private Activity user_act;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String username;
     private String nickname;
-    int score;
+    public int score;
     private float activity;
     private float sociality;
     private int gender;
     private int created;
     private int outside;
-    int age;
+    public int age;
 
-    public User(int User_id, String Email, String Nickname, int Score, float Activity, float Sociality, int Gender, int Age, int  Created, int Outside) {
-        this.user_id = User_id;
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    private Bitmap image;
+
+
+    private User() {
+    }
+
+    private static class LazyHolder {
+        public static final User INSTANCE = new User();
+    }
+
+    /*public User(String Email, String Nickname, int Score, float Activity, float Sociality, int Gender, int Age, int  Created, int Outside) {
         this.email = Email;
         this.nickname = Nickname;
         this.score = Score;
@@ -26,12 +78,34 @@ public class User {
         this.age = Age;
         check_age();
     }
-    public int getUser_id() { return user_id; }
-    public void setUser_id(int user_id) { this.user_id = user_id; }
+
+    public User(String User_id, String Email, String Nickname, int Score, float Activity, float Sociality, int Gender, int Age, int  Created, int Outside) {
+        this.user_id = User_id;
+        this.email = Email;
+        this.nickname = Nickname;
+        this.score = Score;
+        this.activity = Activity;
+        this.sociality = Sociality;
+        this.gender = Gender;
+        this.created = Created;
+        this.outside = Outside;
+        this.age = Age;
+        check_age();
+    }*/
+
+    public String getUser_id() { return user_id; }
+    public void setUser_id(String user_id) { this.user_id = user_id; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getNickname() { return nickname; }
     public void setNickname(String nickname) { this.nickname = nickname; }
+    public LatLng getUser_location() { return user_location; }
+    public void setUser_location(LatLng user_location) { this.user_location = user_location; }
+
+    public static User getInstance() {
+        return LazyHolder.INSTANCE;
+    }
+
     public int getScore() {
         return score;
     }

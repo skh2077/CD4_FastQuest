@@ -3,6 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorBright">#9fdfcd</color>
     <color name="colorClicked">#FF000000</color>
+    <color name="colorBrown">#eadea6</color>
+    <color name="colorGray">#FFFEFE</color>
+
 
 </resources>

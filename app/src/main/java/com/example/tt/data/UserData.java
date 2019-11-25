@@ -6,19 +6,19 @@ import java.util.ArrayList;
 public  class UserData {
 
     private boolean firstFlag = false;
-    boolean flag_art =false;
-    boolean flag_book=false;
-    boolean flag_camera=false;
-    boolean flag_dance=false;
-    boolean flag_food =false;
-    boolean flag_game=false;
-    boolean flag_language=false;
-    boolean flag_meet =false;
-    boolean flag_movie=false;
-    boolean flag_music=false;
-    boolean flag_sports=false;
-    boolean flag_travel=false;
-    boolean flag_volunteer=false;
+    boolean flag_art =true;
+    boolean flag_book=true;
+    boolean flag_camera=true;
+    boolean flag_dance=true;
+    boolean flag_food =true;
+    boolean flag_game=true;
+    boolean flag_language=true;
+    boolean flag_meet =true;
+    boolean flag_movie=true;
+    boolean flag_music=true;
+    boolean flag_sports=true;
+    boolean flag_travel=true;
+    boolean flag_volunteer=true;
 
     static ArrayList<Boolean> BoolList =  new ArrayList<Boolean>();
 

@@ -1,50 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#efe9cc"
     android:gravity="center"
+    android:weightSum="10"
     tools:context=".moim">
 
     <LinearLayout
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_weight="5"
         android:background="#ffffff"
-        android:orientation="vertical"
-        android:gravity="top">
-        <ImageView
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/textView14"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:contentDescription="@string/title"
-            android:src="@drawable/pre_language" />
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="도전 등록하기"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/category"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:autofillHints="category"
+            android:hint="카테고리"
+            android:selectAllOnFocus="true" />
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:autofillHints="title"
+            android:hint="activity"
+            android:selectAllOnFocus="true" />
+
+        <EditText
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:autofillHints="content"
+            android:hint="description"
+            android:selectAllOnFocus="true" />
+
+        <Button
+            android:id="@+id/add_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:selectAllOnFocus="true"
+            android:text="사진 넣기" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Cancel"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:id="@+id/Ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:background="#2196F3"
-                android:text="@string/cancel_kor" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#ffffff" />
+                android:text="확인" />
 
             <Button
-                android:id="@+id/Ok"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:id="@+id/Cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:background="#2196F3"
-                android:text="@string/accept" />
+                android:text="취소" />
         </LinearLayout>
+
 
     </LinearLayout>
 

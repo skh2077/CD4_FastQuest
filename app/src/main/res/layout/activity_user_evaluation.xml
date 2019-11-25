@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#efe9cc"
+    tools:context=".userEvaluation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#00333238"
+                android:contentDescription="@string/back"
+                android:scaleX="2"
+                android:scaleY="2"
+                app:srcCompat="@drawable/ic_clear" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="이번 도전은 어떠셨나요?"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/cat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:layout_weight="1"
+                    android:text="게임/오락"
+                    android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/cat_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    android:scaleX="4"
+                    android:scaleY="4"
+                    android:tint="#000000"
+                    app:srcCompat="@drawable/pre_game" />
+
+                <TextView
+                    android:id="@+id/activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:text="보드게임 즐기기"
+                    android:textSize="20sp" />
+
+                <com.like.LikeButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:icon_size="40dp"
+                    app:icon_type="thumb" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:text="방문한 장소에 대한 평가"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="보드게임하자동작구점"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <com.like.LikeButton
+                        android:id="@+id/like1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="100dp"
+                        android:layout_weight="1"
+                        app:icon_size="25dp"
+                        app:icon_type="star" />
+
+                    <com.like.LikeButton
+                        android:id="@+id/like2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        app:icon_size="25dp"
+                        app:icon_type="star" />
+
+                    <com.like.LikeButton
+                        android:id="@+id/like3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        app:icon_size="25dp"
+                        app:icon_type="star" />
+
+                    <com.like.LikeButton
+                        android:id="@+id/like4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        app:icon_size="25dp"
+                        app:icon_type="star" />
+
+                    <com.like.LikeButton
+                        android:id="@+id/like5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="100dp"
+                        android:layout_weight="1"
+                        app:icon_size="25dp"
+                        app:icon_type="star" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
