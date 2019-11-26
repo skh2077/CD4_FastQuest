@@ -7,26 +7,11 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/chat_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="error"
-            android:textSize="22sp"
-            android:textColor="#000"
-            android:gravity="center"/>
-
-        <ListView
-            android:id="@+id/listView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"></ListView>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"></ListView>
 
     <RelativeLayout
         android:id="@+id/form"

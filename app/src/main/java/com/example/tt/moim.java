@@ -135,6 +135,7 @@ public class moim extends AppCompatActivity {
                         break;
                 }
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
@@ -171,6 +172,28 @@ public class moim extends AppCompatActivity {
                     create_moim_photo = popupView.findViewById(R.id.creat_moim_photo);
                     final Button add_photo = popupView.findViewById(R.id.add_photo);
                     final Button cancel = popupView.findViewById(R.id.Cancel);
+
+
+                    List<String> spinnerArray = new ArrayList<>();
+                    try {
+                        cat_json = read.readJsonFromUrl(url);
+                        cat_arr = new JSONArray(cat_json.get("temp").toString());
+                        for (int i = 0; i < cat_arr.length(); i++) {
+                            JSONObject temp = (JSONObject) cat_arr.get(i);
+                            spinnerArray.add(temp.get("cat_name").toString());
+                            Toast.makeText(moim.this, temp.get("cat_name").toString(), Toast.LENGTH_SHORT);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+
+                    }
+                    spinner = popupView.findViewById(R.id.spinner);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(moim.this, android.R.layout
+                            .simple_spinner_dropdown_item, spinnerArray);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -247,32 +270,20 @@ public class moim extends AppCompatActivity {
                                     Toast.makeText(moim.this, "연결 성공", Toast.LENGTH_SHORT);
                                 }
                             };
-                            List<String> spinnerArray = new ArrayList<>();
+
                             try {
-                                cat_json = read.readJsonFromUrl(url);
-                                cat_arr = new JSONArray(cat_json.get("temp").toString());
-                                for(int i = 0;i<cat_arr.length();i++){
-                                    JSONObject temp = (JSONObject) cat_arr.get(i);
-                                    spinnerArray.add(temp.get("cat_name").toString());
-                                }
+
                                 jsonObject.put("title", create_moim_tilte.getText());
                                 jsonObject.put("content", create_moim_content.getText());
                                 jsonObject.put("photo", photostring);
                                 jsonObject.put("author", user.getUser_id());
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }catch (IOException e){
-                                e.printStackTrace();
                             }
 
                             moimRequest mRequest = new moimRequest(Request.Method.POST, create_moim_url, jsonObject, listener, null);
                             RequestQueue moim_request = Volley.newRequestQueue(moim.this);
 
-                            spinner =popupView.findViewById(R.id.spinner);
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(moim.this,android.R.layout
-                            .simple_spinner_dropdown_item,spinnerArray);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(adapter);
                             //moim_request.add(mRequest);
 
 

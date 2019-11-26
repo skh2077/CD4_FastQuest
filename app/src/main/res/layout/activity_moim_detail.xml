@@ -47,13 +47,12 @@
         />
 
     <Button
-        android:id="@+id/attend_moim"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_weight="5"
         android:text="모임 참가"
-        android:onClick="Attend_moim"
         android:textSize="15dp"/>
 
 </LinearLayout>
