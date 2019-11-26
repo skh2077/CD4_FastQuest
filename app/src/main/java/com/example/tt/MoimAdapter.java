@@ -118,7 +118,6 @@ public class MoimAdapter extends RecyclerView.Adapter<MoimAdapter.ItemViewHolder
             //Toast.makeText(context, data.getTitle() + " 제목 입니다.", Toast.LENGTH_SHORT).show();
             intent.putExtra("content",data.getContent());
            // Toast.makeText(context, data.getContent() + " 내용 입니다.", Toast.LENGTH_SHORT).show();
-            intent.putExtra("id", data.getId());
             context.startActivity(intent);
 
             switch (v.getId()) {

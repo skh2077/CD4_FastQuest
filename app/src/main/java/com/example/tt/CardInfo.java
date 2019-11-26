@@ -42,8 +42,7 @@ public class CardInfo extends AppCompatActivity {
         }
 
         JSONObject user_info;
-        //String user_info_url = "http://52.79.125.108/api/user/" + user.getUsername();
-        String user_info_url = "http://52.79.125.108/api/user/samsung";
+        String user_info_url = "http://52.79.125.108/api/user/%EA%B8%B0%EB%8B%88%ED%94%BC%EA%B7%B8";
         try {
             user_info = read.readJsonFromUrl(user_info_url);
             JSONObject temp = new JSONObject(user_info.get("temp").toString());
@@ -63,14 +62,12 @@ public class CardInfo extends AppCompatActivity {
         value = new Vector<>();
         int cur_card_num = 0;
         String[] moim_str = {"","\n모임"};
-        boolean lack = false;
         do {
-            if(lack == true) {
+            if(value.size() != 0) {
                 url = "http://52.79.125.108/api/users/" + user.getNickname();
                 cur_card_num = value.size();
                 moim_str_num = 0;
             }
-            lack = true;
             JSONObject cat_json = null;
             JSONArray cat_arr = null;
             try {

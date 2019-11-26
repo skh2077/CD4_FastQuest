@@ -11,16 +11,6 @@ public class Data {
     private Bitmap image;
     private String urlImage;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    private int id;
-
     public String getUrlImage() {
         return urlImage;
     }
