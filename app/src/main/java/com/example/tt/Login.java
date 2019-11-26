@@ -43,6 +43,7 @@ public class Login extends AppCompatActivity {
         editor = save.edit();
         final String myid = save.getString("id","");
         final String mypassword = save.getString("password","");
+        final boolean mycheck_pre = save.getBoolean("check_pre",false);
         if(!myid.equals("") && !mypassword.equals("")) {
             Response.Listener<String> responseListener = new Response.Listener<String>(){
                 @Override
@@ -65,7 +66,14 @@ public class Login extends AppCompatActivity {
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                            if(mycheck_pre == false){
+                                                editor.putBoolean("check_pre", true);
+                                                editor.apply();
+                                                startActivity(new Intent(getApplicationContext(),pre_cat.class));
+                                            }
+                                            else {
+                                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                            }
                                             finish();
                                         }
                                     })

@@ -2,8 +2,11 @@ package com.example.tt;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,11 +15,13 @@ import com.squareup.picasso.Picasso;
 
 public class moim_detail extends AppCompatActivity {
 
-
+    Button attend_moim;
+    String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moim_detail);
+        attend_moim = (Button)findViewById(R.id.attend_moim);
         getIncomingIntent();
     }
 
@@ -25,7 +30,7 @@ public class moim_detail extends AppCompatActivity {
         if (getIntent().hasExtra("image") && getIntent().hasExtra("content")) {
 
             String imageUrl = getIntent().getStringExtra("image");
-            String title = getIntent().getStringExtra("title");
+            title = getIntent().getStringExtra("title");
             String author = getIntent().getStringExtra("author");
             String content = getIntent().getStringExtra("content");
 
@@ -41,6 +46,12 @@ public class moim_detail extends AppCompatActivity {
 
         }
 
+    }
+
+    public void Attend_moim(View view){
+        Intent intent = new Intent(getApplicationContext(), chat.class);
+        intent.putExtra("room_name", title + String.valueOf(getIntent().getIntExtra("id", -1)));
+        startActivity(intent);
     }
 
 }

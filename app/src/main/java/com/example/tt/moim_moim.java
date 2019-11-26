@@ -1,5 +1,6 @@
 package com.example.tt;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.tt.model.Data;
 
@@ -49,9 +49,6 @@ public class moim_moim extends Fragment {
         recycleView.setAdapter(adapter);
 
         final String url = "http://52.79.125.108/api/assemble";
-        final String userUrl = "http://52.79.125.108/users/";
-
-        JSONObject temparr = null;
         try {
             cat_json = read.readJsonFromUrl(url);
             cat_arr = new JSONArray(cat_json.get("temp").toString());
@@ -60,22 +57,18 @@ public class moim_moim extends Fragment {
                 Data data = new Data();
                 data.setTitle(temp.get("title").toString());
                 data.setContent(temp.get("content").toString());
-
+                data.setAuthor("작성자 : " + temp.get("author").toString());
                 data.setUrlImage(temp.get("photo").toString());
-                JSONObject tempobject = read.readJsonFromUrl(userUrl + temp.get("author").toString());
-                temparr = new JSONObject(tempobject.get("temp").toString());
+                data.setId(Integer.parseInt(temp.get("id").toString()));
 
-                data.setAuthor("작성자  "+temparr.get("nickname").toString());
+
                 adapter.addItem(data);
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         adapter.notifyDataSetChanged();
 
 
