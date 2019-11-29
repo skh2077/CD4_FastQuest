@@ -44,7 +44,7 @@
     <string name="pre_art_kor">공예/만들기</string>
     <string name="null_string">\n\n</string>
     <string name="name_kor">이름</string>
-    <string name="age_kor">나이</string>
+    <string name="age_kor">생년월일</string>
     <string name="gender_kor">성별</string>
     <string name="sample">00</string>
     <string name="save_kor">저장</string>
@@ -78,4 +78,5 @@
     <string name="menu_send">Send</string>
     <string name="group">Group</string>
     <string name="review_kor">리뷰 및 평가</string>
+    <string name="nickname">닉네임</string>
 </resources>

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -32,6 +33,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.tt.data.User;
+import com.example.tt.model.FileINfo;
+import com.example.tt.remote.APIUtils;
+import com.example.tt.remote.FileService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +45,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class createreview extends AppCompatActivity {
     private final int CAMERA_CODE = 0;
@@ -63,8 +73,11 @@ public class createreview extends AppCompatActivity {
     String mImageCaptureName;//이미지 이름
 
     String imagePath;
-    File image_file;
+    File image_file = null;
 
+    FileService fileService;
+
+    String upload_id;
 
     public void add_review(View view) throws JSONException {
 
@@ -76,24 +89,16 @@ public class createreview extends AppCompatActivity {
             new AlertDialog.Builder(this).setTitle("내용을 입력해주세요").setPositiveButton("OK", null).show();
             return;
         }
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-        try{
-            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        }
-
-        catch (Exception e) {
-            new AlertDialog.Builder(this).setTitle("사진을 입력해주세요").setPositiveButton("OK", null).show();
-            return;
-        }
-        byte[] photobyte = stream.toByteArray();
-        String photostring = Base64.encodeToString(photobyte,0);
 
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>(){
 
             @Override
             public void onResponse(JSONObject response) {
                 try{
+                    upload_id = response.get("id").toString();
+                    int a = 0;
+                    int b= 0;
                 }
                 catch(Exception e){
                     e.printStackTrace();
@@ -105,11 +110,17 @@ public class createreview extends AppCompatActivity {
         jsonObject.put("title",review_title.getText().toString());
         jsonObject.put("content", review_content.getText().toString());
         String actid = idintent.getExtras().getString("act_id");
-        jsonObject.put("act", Integer.parseInt(actid));
-        //jsonObject.put("act", 1);
+        //jsonObject.put("act", Integer.parseInt(actid));
+        jsonObject.put("act", 1);
         jsonObject.put("author", Integer.parseInt(user.getUser_id().toString()));
         //jsonObject.put("author", 3);
-        jsonObject.put("image", photostring);
+        //String nickname = idintent.getExtras().getString("nickname");
+        //jsonObject.put("nickname", nickname);
+        jsonObject.put("nickname", "test_nickname");
+        String username = user.getUsername();
+        jsonObject.put("username", username);
+        //jsonObject.put("username", "test_username");
+        //jsonObject.put("image", "dumy");
 
 
         //ReviewRequest reviewRequest = new ReviewRequest(review_title.getText().toString(),review_content.getText().toString(), photostring, responseListener);
@@ -118,6 +129,27 @@ public class createreview extends AppCompatActivity {
 
         queue.add(reviewRequest);
 
+        if(image_file != null) {
+            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), image_file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("image", image_file.getName(), requestBody);
+
+            Call<FileINfo> call = fileService.upload(body);
+            call.enqueue(new Callback<FileINfo>() {
+                @Override
+                public void onResponse(Call<FileINfo> call, retrofit2.Response<FileINfo> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(createreview.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<FileINfo> call, Throwable t) {
+                    Toast.makeText(createreview.this, "ERROR: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    ;
+
+                }
+            });
+        }
     }
 
 
@@ -125,11 +157,11 @@ public class createreview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_review);
-
-       addImage = (Button)findViewById(R.id.add_image);
-       image = (ImageView)findViewById(R.id.input_image);
-       review_title = (EditText)findViewById(R.id.input_reviw_title);
-       review_content = (EditText)findViewById(R.id.input_reviw_content);
+        fileService = APIUtils.getFileService();
+        addImage = (Button)findViewById(R.id.add_image);
+        image = (ImageView)findViewById(R.id.input_image);
+        review_title = (EditText)findViewById(R.id.input_reviw_title);
+        review_content = (EditText)findViewById(R.id.input_reviw_content);
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {

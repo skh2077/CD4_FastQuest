@@ -102,6 +102,7 @@ public class card_selected extends AppCompatActivity {
         final Intent actintent = new Intent(getApplicationContext(), createreview.class);
         actintent.putExtra("act_id", play_activity.act_id);
 
+
         act_title = (TextView)findViewById(R.id.Title);
         act_title.setText(play_activity.title);
         act_detail = (TextView)findViewById(R.id.Detail);
@@ -135,28 +136,32 @@ public class card_selected extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(card_selected.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if(location != null) {
-                            correct_cur_loc = new LatLng(location.getLatitude(),location.getLongitude());
-                            user.setUser_location(correct_cur_loc);
-                            if(user.getUser_location().latitude == finalPlay_activity.latitude &&
-                                    user.getUser_location().longitude == finalPlay_activity.longitude) {
-                                startActivity(actintent);
-                            }
-                            else {
-                                Toast.makeText(card_selected.this, "활동 장소에 도착한 후 눌러주세요", Toast.LENGTH_SHORT).show();
+                if (finalPlay_activity.outside == 'n') {
+                    // 실내 활동이라면
+                    startActivity(actintent);
+                } else {
+                    // 외부 활동이라면
+                    mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(card_selected.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                correct_cur_loc = new LatLng(location.getLatitude(), location.getLongitude());
+                                user.setUser_location(correct_cur_loc);
+                                if (user.getUser_location().latitude == finalPlay_activity.latitude &&
+                                        user.getUser_location().longitude == finalPlay_activity.longitude) {
+                                    //외부 활동 완료, 점수 추가!!
+                                    startActivity(actintent);
+                                } else {
+                                    Toast.makeText(card_selected.this, "활동 장소에 도착한 후 눌러주세요", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
+                                LatLng loc_temp = new LatLng(0, 0);
+                                user.setUser_location(loc_temp);
                             }
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
-                            LatLng loc_temp = new LatLng(0,0);
-                            user.setUser_location(loc_temp);
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
     }

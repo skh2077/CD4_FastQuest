@@ -91,9 +91,6 @@ public class BackgroundService extends Service {
         public void onLocationChanged(Location location) {
             Log.e(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);
-            //토스트 띄우기
-            Toast.makeText(BackgroundService.this, "백그라운드 실행", Toast.LENGTH_LONG).show();
-
 
             if(Math.abs(mLastLocation.getLatitude() - latitude) < 0.0005 &&//약50m
             Math.abs(mLastLocation.getLongitude() - longitude) < 0.0005) {
@@ -103,9 +100,9 @@ public class BackgroundService extends Service {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(BackgroundService.this, "1001")
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_foreground)) //BitMap 이미지 요구
                         .setContentTitle("알림")
-                        //.setContentText(location.toString())
+                        .setContentText("도착했어요")
                         // 더 많은 내용이라서 일부만 보여줘야 하는 경우 아래 주석을 제거하면 setContentText에 있는 문자열 대신 아래 문자열을 보여줌
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("위치에 도착했습니다!!"))
+                        //.setStyle(new NotificationCompat.BigTextStyle().bigText("위치에 도착했습니다!!"))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(true);
 
@@ -241,7 +238,7 @@ public class BackgroundService extends Service {
         Log.e(TAG, "onDestroy");
         Intent broadcastIntent = new Intent("com.bluexmas.common.RestartService");
         sendBroadcast(broadcastIntent);
-        Toast.makeText(BackgroundService.this, "끝남", Toast.LENGTH_LONG).show();
+        //Toast.makeText(BackgroundService.this, "끝남", Toast.LENGTH_LONG).show();
         super.onDestroy();
         if (mLocationManager != null) {
             for (int i = 0; i < mLocationListeners.length; i++) {

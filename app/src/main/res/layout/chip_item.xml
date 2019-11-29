@@ -5,6 +5,7 @@
     android:id="@+id/chip_item"
     android:text="Example"
     style="@style/AppTheme_"
+    android:checkable="true"
     android:clickable="true"
     android:focusable="true"
     android:layout_width="wrap_content"

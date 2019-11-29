@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Switch moim_switch;
     static SharedPreferences save;
     static SharedPreferences.Editor editor;
+    TextView nick_and_username;
+    TextView small_view_score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view_drawer);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View nav_header_view = navigationView.getHeaderView(0);
+
+        nick_and_username = nav_header_view.findViewById(R.id.userId);
+        nick_and_username.setText(user.getNickname() + "(" + user.getUsername() + ")");
+        small_view_score = nav_header_view.findViewById(R.id.small_score);
+        //small_view_score.setText(user.getScore());
+        small_view_score.setText("10");
 
         moim_switch = findViewById(R.id.switch_moim);
 

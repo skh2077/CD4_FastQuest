@@ -106,25 +106,25 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/gendertext"
+        android:id="@+id/nicknametext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
         android:layout_marginTop="30dp"
-        android:text="@string/gender_kor"
+        android:text="@string/nickname"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ageinput" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/genderinput"
+        android:id="@+id/nicknameinput"
         android:layout_width="170dp"
         android:layout_height="45dp"
         android:layout_marginStart="85dp"
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gendertext">
+        app:layout_constraintTop_toBottomOf="@+id/nicknametext">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"

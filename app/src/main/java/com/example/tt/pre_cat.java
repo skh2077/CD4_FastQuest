@@ -158,55 +158,57 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        LayoutInflater inflater;
         switch (v.getId()){
             case R.id.pre_Art:
+                if (pre_art.isChecked()) {
+                    chipGroup.removeAllViews();
+                    scat_list.clear();
 
-                chipGroup.removeAllViews();
-                scat_list.clear();
-                for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                    Chip chip = (Chip) chipGroup.getChildAt(i);
-                    boolean foo = scat_list_save.contains(chip.getText().toString());
-                    if (chip.isChecked() && !foo) {
-                        scat_list_save.add(chip.getText().toString());
-
-                    } else if (!chip.isChecked() && foo) {
-                        scat_list_save.remove(chip.getText().toString());
+                    url = "http://52.79.125.108/api/lcat/공예";
+                    try {
+                        cat_json = read.readJsonFromUrl(url);
+                        cat_arr = new JSONArray(cat_json.get("temp").toString());
+                        for (int i = 0; i < cat_arr.length(); i++) {
+                            JSONObject temp = (JSONObject) cat_arr.get(i);
+                            scat_list.add(temp.get("cat_name").toString());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }
 
-                url = "http://52.79.125.108/api/lcat/공예";
-                try {
-                    cat_json = read.readJsonFromUrl(url);
-                    cat_arr = new JSONArray(cat_json.get("temp").toString());
-                    for (int i = 0; i < cat_arr.length(); i++) {
-                        JSONObject temp = (JSONObject) cat_arr.get(i);
-                        scat_list.add(temp.get("cat_name").toString());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    Toast.makeText(getApplicationContext(), pre_art.getText(), Toast.LENGTH_SHORT).show();
+                    inflater = LayoutInflater.from(pre_cat.this);
 
-                Toast.makeText(getApplicationContext(), pre_art.getText(), Toast.LENGTH_SHORT).show();
-                LayoutInflater inflater = LayoutInflater.from(pre_cat.this);
-
-                for (String text : scat_list) {
-                    Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                    chip.setText(text);
-
-                    if (scat_list_save.contains(text)) {
-                        chip.setChecked(true);
-                    }
+                    for (String text : scat_list) {
+                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
+                        chip.setText(text);
+                        if (scat_list_save.contains(text)) {
+                            chip.setChecked(true);
+                        }
                        /* chip.setOnCloseIconClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 chipGroup.removeView(v);
                             }
                         });*/
-                    chipGroup.addView(chip);
+                        chipGroup.addView(chip);
+                    }
                 }
+                else {
+                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
+                        Chip chip = (Chip) chipGroup.getChildAt(i);
+                        boolean foo = scat_list_save.contains(chip.getText().toString());
+                        if (chip.isChecked() && !foo) {
+                            scat_list_save.add(chip.getText().toString());
 
+                        } else if (!chip.isChecked() && foo) {
+                            scat_list_save.remove(chip.getText().toString());
+                        }
+                    }
+                }
                 Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
 
                 break;
