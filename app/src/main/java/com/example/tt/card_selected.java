@@ -147,8 +147,8 @@ public class card_selected extends AppCompatActivity {
                             if (location != null) {
                                 correct_cur_loc = new LatLng(location.getLatitude(), location.getLongitude());
                                 user.setUser_location(correct_cur_loc);
-                                if (user.getUser_location().latitude == finalPlay_activity.latitude &&
-                                        user.getUser_location().longitude == finalPlay_activity.longitude) {
+                                if(Math.abs(user.getUser_location().latitude - finalPlay_activity.latitude) < 0.0005 &&//약50m
+                                        Math.abs(user.getUser_location().longitude - finalPlay_activity.longitude) < 0.0005) {
                                     //외부 활동 완료, 점수 추가!!
                                     startActivity(actintent);
                                 } else {

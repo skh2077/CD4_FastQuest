@@ -124,7 +124,7 @@ public class createreview extends AppCompatActivity {
 
 
         //ReviewRequest reviewRequest = new ReviewRequest(review_title.getText().toString(),review_content.getText().toString(), photostring, responseListener);
-        ReviewRequest reviewRequest = new ReviewRequest(Request.Method.POST, "http://52.79.125.108/api/feed/", jsonObject, responseListener,null);
+        ReviewRequest reviewRequest = new ReviewRequest(Request.Method.POST, jsonObject, responseListener,null);
         RequestQueue queue = Volley.newRequestQueue(createreview.this);
 
         queue.add(reviewRequest);

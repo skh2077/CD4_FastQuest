@@ -9,11 +9,10 @@
 
     <ImageView
         android:id="@+id/NOTaImage2"
-        android:layout_width="252dp"
+        android:layout_width="300dp"
         android:layout_height="116dp"
-        android:layout_marginStart="79dp"
         android:layout_marginTop="41dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="242dp"
         android:contentDescription="@string/app_name"
         android:tint="#F8F8EA"
@@ -22,27 +21,44 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Timepick"
-        app:layout_constraintVertical_bias="0.622"
+        app:layout_constraintVertical_bias="0.615"
         app:srcCompat="@android:color/background_light" />
 
     <TextView
         android:id="@+id/Title2"
-        android:layout_width="100dp"
-        android:layout_height="26dp"
-        android:layout_marginEnd="110dp"
+        android:layout_width="135dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="70dp"
         android:layout_marginBottom="60dp"
         android:text="@string/title"
         app:layout_constraintBottom_toBottomOf="@+id/NOTaImage2"
         app:layout_constraintEnd_toEndOf="@+id/NOTaImage2"
+        app:layout_constraintHorizontal_bias="0.233"
         app:layout_constraintStart_toStartOf="@+id/NOTaImage2"
+        app:layout_constraintTop_toTopOf="@+id/NOTaImage2"
+        app:layout_constraintVertical_bias="0.433" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="97dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="10dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/Detail2"
+        app:layout_constraintEnd_toEndOf="@+id/NOTaImage2"
+        app:layout_constraintStart_toEndOf="@+id/Title2"
         app:layout_constraintTop_toTopOf="@+id/NOTaImage2" />
 
     <TextView
         android:id="@+id/Detail2"
-        android:layout_width="166dp"
-        android:layout_height="43dp"
+        android:layout_width="248dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="70dp"
+        android:layout_marginEnd="30dp"
         android:text="@string/detail"
         app:layout_constraintBottom_toBottomOf="@+id/NOTaImage2"
         app:layout_constraintEnd_toEndOf="@+id/NOTaImage2"

@@ -183,11 +183,15 @@ public class BackgroundService extends Service {
             timer = new Timer();
             initializeTimerTask();
             long delay = 0;
-            Date moim_time = user.getUser_act().date;
-            if (moim_time.getTime() - cur_time.getTime() > 1000 * 60 * 30) {
-                delay = moim_time.getTime() - cur_time.getTime() - 1000 * 60 * 30;
+            try {
+                Date moim_time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(time);
+                if (moim_time.getTime() - cur_time.getTime() > 1000 * 60 * 30) {
+                    delay = moim_time.getTime() - cur_time.getTime() - 1000 * 60 * 30;
+                }
+                timer.schedule(timerTask, delay);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            timer.schedule(timerTask, delay);
         }
         return START_STICKY;
     }

@@ -28,11 +28,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class moim_card_selected extends AppCompatActivity {
     Button reloadButton;
@@ -74,12 +76,13 @@ public class moim_card_selected extends AppCompatActivity {
             play_activity.content = moim_act.get("content").toString();
             String[] temp_array = moim_act.get("time").toString().split("T");
             String moim_act_time_str = temp_array[0] + "-" + temp_array[1];
-            Date moim_act_time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(moim_act_time_str);;
+            Date moim_act_time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(moim_act_time_str);
             play_activity.setDate(moim_act_time);
             user.setUser_act(play_activity);
             editor.putString("latitude", "");
             editor.putString("longitude", "");
             editor.putString("date", moim_act_time_str);
+
             //editor.putString("date");
             editor.apply();
             mBackgroundService = new BackgroundService();
@@ -98,8 +101,8 @@ public class moim_card_selected extends AppCompatActivity {
         act_detail = (TextView)findViewById(R.id.Detail2);
         act_detail.setText(play_activity.content);
         timePicker = (TimePicker)findViewById(R.id.Timepick);
-        timePicker.setHour(11);
-        timePicker.setMinute(30);
+        timePicker.setHour(play_activity.getDate().getHours());
+        timePicker.setMinute(play_activity.getDate().getMinutes());
 
         reloadButton = (Button)findViewById(R.id.Reload2);
         reloadButton.setOnClickListener(new View.OnClickListener() {
@@ -129,28 +132,29 @@ public class moim_card_selected extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String gtime = save.getString("date", "");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+                format.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                String cur_str = format.format(new Date());
+                Date current = new Date();
 
-                mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(moim_card_selected.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if(location != null) {
-                            correct_cur_loc = new LatLng(location.getLatitude(),location.getLongitude());
-                            user.setUser_location(correct_cur_loc);
-                            if(user.getUser_location().latitude == finalPlay_activity.latitude &&
-                                    user.getUser_location().longitude == finalPlay_activity.longitude) {
-                                startActivity(actintent);
-                            }
-                            else {
-                                Toast.makeText(moim_card_selected.this, "활동 장소에 도착한 후 눌러주세요", Toast.LENGTH_SHORT).show();
-                            }
+                if (!gtime.equals("")) {
+                    try {
+                        Date goal_time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(gtime);
+                        current = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(cur_str);
+                        if (Math.abs(goal_time.getTime() - current.getTime()) < 1000 * 60 * 30) {
+                            startActivity(actintent);
+                        } else {
+                            Toast.makeText(moim_card_selected.this, "약속시간 30분 내외로 가능합니다.", Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
-                            LatLng loc_temp = new LatLng(0,0);
-                            user.setUser_location(loc_temp);
-                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                });
+                } else {
+                    Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
+                    LatLng loc_temp = new LatLng(0, 0);
+                    user.setUser_location(loc_temp);
+                }
             }
         });
     }

@@ -13,8 +13,8 @@ public class ReviewRequest extends JsonObjectRequest {
     final static private String URL = "http://52.79.125.108/api/feed/";
     private HashMap<String, String> params;
 
-    public ReviewRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener){
-        super(method, url, jsonRequest, listener, errorListener);
+    public ReviewRequest(int method, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener){
+        super(method, URL, jsonRequest, listener, errorListener);
     }
 
     /*public ReviewRequest(String review_title, String review_content, String photostring, Response.Listener<String> listener){

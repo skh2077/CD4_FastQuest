@@ -11,6 +11,12 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.example.tt.data.User;
 import com.example.tt.data.UserData;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -49,7 +55,9 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
     ArrayList<String> scat_list = new ArrayList<String>();
     ArrayList<String> scat_list_save = new ArrayList<String>();
 
+    LayoutInflater inflater;
 
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +99,8 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
         UserData userdata = new UserData();
         BoolList = userdata.getBooList();
 
+        user = User.getInstance();
+
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,21 +128,36 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
 
 
                 //DELETE and For-loop PUT
-                for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                    Chip chip = (Chip) chipGroup.getChildAt(i);
-                    boolean foo = scat_list_save.contains(chip.getText().toString());
-                    if (chip.isChecked() && !foo) {
-                        scat_list_save.add(chip.getText().toString());
+                save_chip();
 
-                    } else if (!chip.isChecked() && foo) {
-                        scat_list_save.remove(chip.getText().toString());
+                UserData userdata = new UserData(); // <= 먼 필요야?
+
+                for (int i = 1; i < scat_list_save.size(); i++) {
+                    Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>(){
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try{
+                            }
+                            catch(Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    };//Response.Listener 완료
+
+                    JSONObject jsonObject = new JSONObject();
+
+                    try {
+                        jsonObject.put("user", user.getUser_id());
+                        jsonObject.put("cat_name", scat_list_save.get(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }
 
-                UserData userdata = new UserData();
-                for (int i = 0; i < scat_list_save.size(); i++) {
+                    pre_cat_Request preCatRequest = new pre_cat_Request(Request.Method.POST, jsonObject, responseListener,null);
+                    RequestQueue queue = Volley.newRequestQueue(pre_cat.this);
 
-                    Toast.makeText(getApplicationContext(), scat_list_save.get(i), Toast.LENGTH_SHORT).show();
+                    queue.add(preCatRequest);
                 }
 
                 // startActivity(new Intent(getApplicationContext(),MainActivity.class));
@@ -158,604 +183,104 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        LayoutInflater inflater;
+
         switch (v.getId()){
             case R.id.pre_Art:
-                if (pre_art.isChecked()) {
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-
-                    url = "http://52.79.125.108/api/lcat/공예";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    Toast.makeText(getApplicationContext(), pre_art.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                       /* chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                chipGroup.removeView(v);
-                            }
-                        });*/
-                        chipGroup.addView(chip);
-                    }
-                }
-                else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                }
-                Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
-
+                save_chip();
+                create_chip("공예");
                 break;
             case R.id.pre_Book:
-
-                if (pre_book.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/인문";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_book.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-                Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
-
+                save_chip();
+                create_chip("인문");
                 break;
             case R.id.pre_Camera:
-
-                if (pre_camera.isChecked()) {
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                    url = "http://52.79.125.108/api/lcat/사진";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_camera.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-                Toast.makeText(getApplicationContext(), "3", Toast.LENGTH_SHORT).show();
-
+                save_chip();
+                create_chip("사진");
                 break;
             case R.id.pre_Dance:
-
-                if (pre_dance.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/댄스";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_dance.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
-                Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_SHORT).show();
-
+                save_chip();
+                create_chip("댄스");
                 break;
             case R.id.pre_Food:
-
-                if (pre_food.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/요리";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_food.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-                Toast.makeText(getApplicationContext(), "5", Toast.LENGTH_SHORT).show();
-
+                save_chip();
+                create_chip("요리");
                 break;
             case R.id.pre_Game:
-
-                if (pre_game.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/게임";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_game.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
-                Toast.makeText(getApplicationContext(), "6", Toast.LENGTH_SHORT).show();
-
+                save_chip();
+                create_chip("게임");
                 break;
             case R.id.pre_Language:
-                if (pre_language.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/외국";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_language.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
-                Toast.makeText(getApplicationContext(), "7", Toast.LENGTH_SHORT).show();
-
+                save_chip();
+                create_chip("외국");
                 break;
             case R.id.pre_Meet:
-
-                if (pre_meet.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/사교";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_meet.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
-
+                save_chip();
+                create_chip("사교");
                 break;
             case R.id.pre_Movie:
-                if (pre_movie.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/문화";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_movie.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
-
+                save_chip();
+                create_chip("문화");
                 break;
             case R.id.pre_Music:
-                if (pre_music.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/음악";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_music.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
+                save_chip();
+                create_chip("음악");
                 break;
             case R.id.pre_Sports:
-
-                if (pre_sports.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/운동";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_sports.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
+                save_chip();
+                create_chip("운동");
                 break;
             case R.id.pre_Travel:
-
-                if (pre_travel.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/아웃";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_travel.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
+                save_chip();
+                create_chip("아웃");
                 break;
             case R.id.pre_Volunteer:
-
-                if (pre_volunteer.isChecked()) {
-                    scat_list.clear();
-                    chipGroup.removeAllViews();
-                    url = "http://52.79.125.108/api/lcat/봉사";
-                    try {
-                        cat_json = read.readJsonFromUrl(url);
-                        cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for (int i = 0; i < cat_arr.length(); i++) {
-                            JSONObject temp = (JSONObject) cat_arr.get(i);
-                            scat_list.add(temp.get("cat_name").toString());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(), pre_volunteer.getText(), Toast.LENGTH_SHORT).show();
-                    inflater = LayoutInflater.from(pre_cat.this);
-                    for (String text : scat_list) {
-                        Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        if (scat_list_save.contains(text)) {
-                            chip.setChecked(true);
-                        }
-                        chipGroup.addView(chip);
-                    }
-                } else {
-                    for (int i = 0; i < chipGroup.getChildCount(); i++) {
-                        Chip chip = (Chip) chipGroup.getChildAt(i);
-                        boolean foo = scat_list_save.contains(chip.getText().toString());
-                        if (chip.isChecked() && !foo) {
-                            scat_list_save.add(chip.getText().toString());
-
-                        } else if (!chip.isChecked() && foo) {
-                            scat_list_save.remove(chip.getText().toString());
-                        }
-                    }
-                    chipGroup.removeAllViews();
-                    scat_list.clear();
-                }
-
+                save_chip();
+                create_chip("봉사");
                 break;
-
         }
     }
+
+    public void create_chip(String lcat) {
+        scat_list.clear();
+        chipGroup.removeAllViews();
+        url = "http://52.79.125.108/api/lcat/" + lcat;
+        try {
+            cat_json = read.readJsonFromUrl(url);
+            cat_arr = new JSONArray(cat_json.get("temp").toString());
+            for (int i = 0; i < cat_arr.length(); i++) {
+                JSONObject temp = (JSONObject) cat_arr.get(i);
+                scat_list.add(temp.get("cat_name").toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getApplicationContext(), lcat, Toast.LENGTH_SHORT).show();
+        inflater = LayoutInflater.from(pre_cat.this);
+        for (String text : scat_list) {
+            Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
+            chip.setText(text);
+            if (scat_list_save.contains(text)) {
+                chip.setChecked(true);
+            }
+            chipGroup.addView(chip);
+        }
+    }
+
+    public void save_chip() {
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            boolean foo = scat_list_save.contains(chip.getText().toString());
+            if (chip.isChecked() && !foo) {
+                scat_list_save.add(chip.getText().toString());
+
+            } else if (!chip.isChecked() && foo) {
+                scat_list_save.remove(chip.getText().toString());
+            }
+        }
+        chipGroup.removeAllViews();
+        scat_list.clear();
+    }
+
 }
