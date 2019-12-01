@@ -12,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.tt.data.Activity;
 import com.example.tt.data.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -39,6 +41,7 @@ public class card_selected extends AppCompatActivity {
     private FusedLocationProviderClient mfusedLocationProviderClient;
     LatLng correct_cur_loc;
     User user;
+    Activity play_activity;
 
     static SharedPreferences save;
     static SharedPreferences.Editor editor;
@@ -50,61 +53,94 @@ public class card_selected extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        user  = User.getInstance();
+        user = User.getInstance();
         super.onCreate(savedInstanceState);
-
-        final Intent intent = getIntent();
-        reload_num = intent.getExtras().getInt("reload");
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        String cat_name = intent.getExtras().getString("cat_name");
+        setContentView(R.layout.activity_card_selected);
 
+        String cat_score;
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
 
         editor.putInt("page", 2);
         editor.apply();
 
-        String url = "http://52.79.125.108/api/activity/" + cat_name;
-        setContentView(R.layout.activity_card_selected);
-        Activity play_activity = new Activity("0", "null","null","null",
-                'n','n', "null", 0, 0, 0);
+        float add_score = 0;
+        final String str_act = save.getString("activity","");
 
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+        if (str_act.equals("")) {
+            final Intent intent = getIntent();
+            reload_num = intent.getExtras().getInt("reload");
+            editor.putInt("reload",reload_num);
+            editor.apply();
+            String cat_name = intent.getExtras().getString("cat_name");
+            String cat_all = intent.getExtras().getString("cat_all");
+
+            try {
+                JSONObject tempj = new JSONObject(cat_all);
+                cat_score = tempj.get("activity_rate").toString();
+                add_score = Math.abs(user.getActivity() - Float.parseFloat(cat_score));
+                editor.putFloat("cat_score", add_score);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String url = "http://52.79.125.108/api/activity/" + cat_name;
+            play_activity = new Activity("0", "null", "null", "null",
+                    'n', 'n', "null", 0, 0, 0);
+            try {
+                play_activity = set_info(url);
+                editor.putString("latitude", String.valueOf(play_activity.latitude));
+                editor.putString("longitude", String.valueOf(play_activity.longitude));
+                editor.putString("date", "");
+                //editor.putString("date");
+                editor.apply();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            reload_num = save.getInt("reload",5);
+            add_score = save.getFloat("cat_score",0);
+            try {
+                JSONObject tem_j = new JSONObject(str_act);
+                play_activity = new Activity(tem_j);
+                play_activity.score = save.getFloat("act_score",0);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
             return;
         }
         mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if(location != null) {
-                    correct_cur_loc = new LatLng(location.getLatitude(),location.getLongitude());
+                if (location != null) {
+                    correct_cur_loc = new LatLng(location.getLatitude(), location.getLongitude());
                     user.setUser_location(correct_cur_loc);
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
-                    LatLng loc_temp = new LatLng(0,0);
+                    LatLng loc_temp = new LatLng(0, 0);
                     user.setUser_location(loc_temp);
                 }
             }
         });
-        try {
-            play_activity = set_info(url);
-            user.setUser_act(play_activity);
-            editor.putString("latitude", String.valueOf(play_activity.latitude));
-            editor.putString("longitude", String.valueOf(play_activity.longitude));
-            editor.putString("date","");
-            //editor.putString("date");
-            editor.apply();
-            mBackgroundService = new BackgroundService();
-            mBackgroundServiceIntent = new Intent(getApplicationContext(), mBackgroundService.getClass());
-            startService(mBackgroundServiceIntent);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        user.setUser_act(play_activity);
+
+        add_score = add_score + play_activity.score * 10;
+        mBackgroundService = new BackgroundService();
+        mBackgroundServiceIntent = new Intent(getApplicationContext(), mBackgroundService.getClass());
+        startService(mBackgroundServiceIntent);
+
         final Intent actintent = new Intent(getApplicationContext(), createreview.class);
         actintent.putExtra("act_id", play_activity.act_id);
+        actintent.putExtra("save_score", add_score);
 
 
         act_title = (TextView)findViewById(R.id.Title);
@@ -120,10 +156,11 @@ public class card_selected extends AppCompatActivity {
                     reload_num --;
                     Intent reintent = new Intent(getApplicationContext(), CardInfo.class);
                     reintent.putExtra("reload", reload_num);
+                    editor.remove("activity");
+                    editor.apply();
                     startActivity(reintent);
-                }
-                else{
-                    Toast.makeText(card_selected.this, "reload 횟수가 끝났습니다.", Toast.LENGTH_LONG);
+                }else{
+                    new AlertDialog.Builder(card_selected.this).setTitle("Reload 횟수가 끝났습니다.").setPositiveButton("OK", null).show();
                 }
             }
         });
@@ -176,6 +213,7 @@ public class card_selected extends AppCompatActivity {
         JSONObject activities_json = Read.readJsonFromUrl(url);
         JSONArray activities_arr = new JSONArray(activities_json.get("temp").toString());
         List<Activity> activities = new ArrayList<Activity>();
+        List<JSONObject> jactivities = new ArrayList<>();
         for (int i = 0; i < activities_arr.length(); i++) {
             JSONObject temp_json_activity = (JSONObject) activities_arr.get(i);
             Activity temp_activity = new Activity(temp_json_activity);
@@ -185,6 +223,7 @@ public class card_selected extends AppCompatActivity {
             float score = (float) Math.sqrt(lat + lon);
             temp_activity.score = score;
             activities.add(temp_activity);
+            jactivities.add(temp_json_activity);
         }
         if (activities.size() > 0) {
             float min = activities.get(0).score;
@@ -195,6 +234,9 @@ public class card_selected extends AppCompatActivity {
                     index = u;
                 }
             }
+            editor.putString("activity", jactivities.get(index).toString());
+            editor.putFloat("act_score", activities.get(index).score);
+            editor.apply();
             return activities.get(index);
         }
         else{

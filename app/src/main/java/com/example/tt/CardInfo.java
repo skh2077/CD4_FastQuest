@@ -50,10 +50,11 @@ public class CardInfo extends AppCompatActivity {
         catch (Exception e) {
             Toast.makeText(this, "reload error", Toast.LENGTH_SHORT);
         }
+        editor.putInt("reload", reload_value);
+        editor.apply();
 
         JSONObject user_info;
-        //String user_info_url = "http://52.79.125.108/api/user/" + user.getUsername();
-        String user_info_url = "http://52.79.125.108/api/user/samsung";
+        String user_info_url = "http://52.79.125.108/api/user/" + user.getUsername();
         try {
             user_info = read.readJsonFromUrl(user_info_url);
             JSONObject temp = new JSONObject(user_info.get("temp").toString());

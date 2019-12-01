@@ -3,14 +3,19 @@ package com.example.tt;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.SphericalUtil;
+
+import java.io.IOException;
+import java.util.List;
 
 public class map extends AppCompatActivity implements OnMapReadyCallback {
     private FragmentManager fragmentManager;
@@ -42,6 +51,10 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
     double goal_lng;
     LocationManager locationManager;
     String locationProvider;
+    MarkerOptions startMarkeroption;
+    boolean noti = false;
+    Marker tempMarker;
+    List<Address> list = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,19 +96,19 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
 
                 case LocationProvider.OUT_OF_SERVICE :
 
-                    Toast.makeText(map.this, "위치 정보를 이용할 수 없습니다.", 0).show();
+                    Toast.makeText(map.this, "위치 정보를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
 
                     break;
 
                 case LocationProvider.TEMPORARILY_UNAVAILABLE :
 
-                    Toast.makeText(map.this, "일시적으로 이용을 할 수 없습니다.", 0).show();
+                    Toast.makeText(map.this, "일시적으로 이용을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
 
                     break;
 
                 case LocationProvider.AVAILABLE :
 
-                    Toast.makeText(map.this, "위치 정보가 이용 가능합니다.", 0).show();
+                    Toast.makeText(map.this, "위치 정보가 이용 가능합니다.", Toast.LENGTH_SHORT).show();
 
                     break;
 
@@ -109,7 +122,7 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
 
         public void onProviderEnabled(String provider) {
 
-            Toast.makeText(map.this, "위치 정보가 이용 가능합니다.", 0).show();
+            Toast.makeText(map.this, "위치 정보가 이용 가능합니다.", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -117,7 +130,7 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
 
         public void onProviderDisabled(String provider) {
 
-            Toast.makeText(map.this, "위치 정보를 이용할 수 없습니다.", 0).show();
+            Toast.makeText(map.this, "위치 정보를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -126,14 +139,32 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
         public void onLocationChanged(Location location) {
 
             //기존의 현재위치 지우기
-            LatLng mycurloc =  new LatLng(location.getLatitude(), location.getLongitude());
-            MarkerOptions startMarkeroption = new MarkerOptions();
+            LatLng mycurloc = new LatLng(location.getLatitude(), location.getLongitude());
+            startMarkeroption = new MarkerOptions();
             startMarkeroption.position(mycurloc);
-            startMarkeroption.title("갱신 된 현재 위치 : " + location.getLatitude() + ", "  + location.getLongitude());
+            startMarkeroption.title("갱신 된 현재 위치 : " + location.getLatitude() + ", " + location.getLongitude());
+
             startMarker = gmap.addMarker(startMarkeroption);
-            LatLng camera = new LatLng((startMarker.getPosition().latitude + goalMarker.getPosition().latitude)/2, (startMarker.getPosition().longitude + goalMarker.getPosition().longitude) / 2);
+            LatLng camera = new LatLng((startMarker.getPosition().latitude + goalMarker.getPosition().latitude) / 2, (startMarker.getPosition().longitude + goalMarker.getPosition().longitude) / 2);
             double zoom = 20 - (Math.log(Math.max(Math.abs(startMarker.getPosition().latitude - goalMarker.getPosition().latitude), Math.abs(startMarker.getPosition().longitude - goalMarker.getPosition().longitude)) / 0.00035) / Math.log(2));
-            gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(camera, (float)zoom));
+            gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(camera, (float) zoom));
+
+            LatLng currpos = new LatLng(location.getLatitude(), location.getLongitude());
+
+            LatLng goalLocation = goalMarker.getPosition();
+
+            double radius = 500; // 500m distance.
+
+            double distance = SphericalUtil.computeDistanceBetween(currpos, goalLocation);
+
+            if ((distance < radius) && noti == false) {
+                noti = true;
+                Toast.makeText(map.this, "목적지 근처 500m 이내 입니다.", Toast.LENGTH_LONG).show();
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            } else if ((distance > radius) && noti == true) {
+                Toast.makeText(map.this, "목적지 근처에서 벗어났습니다.", Toast.LENGTH_LONG).show();
+                noti = false;
+            }
 
         }
 
@@ -158,16 +189,12 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
         Location currrrrlocation = locationManager.getLastKnownLocation(locationProvider);
         locationManager.requestLocationUpdates(locationProvider, 5000, 10, listener);
 
-
-
-
-
         mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 if(location != null) {
                     LatLng mycurloc =  new LatLng(location.getLatitude(), location.getLongitude());
-                    MarkerOptions startMarkeroption = new MarkerOptions();
+                    startMarkeroption = new MarkerOptions();
                     startMarkeroption.position(mycurloc);
                     startMarkeroption.title("현재 위치 : " + location.getLatitude() + ", "  + location.getLongitude());
                     startMarker = gmap.addMarker(startMarkeroption);
@@ -181,7 +208,38 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
+        gmap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+            @Override
+            public void onMapClick(LatLng point) {
+                if(tempMarker != null) {
+                    tempMarker.remove();
+                }
+                MarkerOptions mOptions = new MarkerOptions();
+                // 마커 타이틀
+                mOptions.title("마커 좌표");
+                Double latitude = point.latitude; // 위도
+                Double longitude = point.longitude; // 경도
+                Geocoder geocoder = new Geocoder(map.this);
+                try {
+                    list = geocoder.getFromLocation(latitude, longitude, 10);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (list != null) {
+                    if (list.size()==0) {
+                        mOptions.snippet("해당되는 주소 정보는 없습니다");
+                    } else {
+                        mOptions.snippet(list.get(0).getAddressLine(0));
 
+                    }
+                }
+
+                // LatLng: 위도 경도 쌍을 나타냄
+                mOptions.position(new LatLng(latitude, longitude));
+                // 마커(핀) 추가
+                tempMarker = googleMap.addMarker(mOptions);
+            }
+        });
 
     }
 
@@ -221,6 +279,7 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
                         public void onSuccess(Location location) {
                             if(location != null) {
                                 LatLng mycurloc =  new LatLng(location.getLatitude(), location.getLongitude());
+                                startMarkeroption = new MarkerOptions();
                                 startMarker.setPosition(mycurloc);
                                 startMarker.setTitle("현재 위치 : " + location.getLatitude() + ", "  + location.getLongitude());
                                 LatLng camera = new LatLng((startMarker.getPosition().latitude + goalMarker.getPosition().latitude)/2, (startMarker.getPosition().longitude + goalMarker.getPosition().longitude) / 2);

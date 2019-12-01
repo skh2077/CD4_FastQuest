@@ -80,7 +80,7 @@ public class createreview extends AppCompatActivity {
     FileService fileService;
 
     String upload_id;
-
+    float point;
     static SharedPreferences save;
     static SharedPreferences.Editor editor;
 
@@ -98,7 +98,8 @@ public class createreview extends AppCompatActivity {
             new AlertDialog.Builder(this).setTitle("이미지 없습니다.").setPositiveButton("OK", null).show();
             return;
         }
-
+        Intent idintent = getIntent();
+        point = idintent.getFloatExtra("save_score",0);
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
 
             @Override
@@ -117,6 +118,26 @@ public class createreview extends AppCompatActivity {
                                 Toast.makeText(createreview.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(createreview.this, image_file.getName(), Toast.LENGTH_SHORT).show();
                                 editor.remove("page");
+
+                                Response.Listener<JSONObject> pjresponseListener = new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Toast.makeText(createreview.this, String.valueOf(point) + "점이 적립되었습니다.", Toast.LENGTH_LONG);
+
+                                    }
+                                };
+                                JSONObject pointj = new JSONObject();
+                                try {
+                                    pointj.put("score", (int)point);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                String URL = "http://52.79.125.108/users/" + user.getUser_id();
+                                addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+                                RequestQueue pjqueue = Volley.newRequestQueue(createreview.this);
+                                pjqueue.add(preq);
+                                finish();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }
                         }
@@ -131,7 +152,7 @@ public class createreview extends AppCompatActivity {
                 }
             }
         };//Response.Listener 완료
-        Intent idintent = getIntent();
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("title", review_title.getText().toString());
         jsonObject.put("content", review_content.getText().toString());
@@ -176,6 +197,7 @@ public class createreview extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(createreview.this, String.valueOf(point) + "점이 적립되었습니다.", Toast.LENGTH_LONG);
                 finish();
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }

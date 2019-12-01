@@ -51,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
 
+        editor.remove("activity");
+        editor.remove("page");
+        editor.apply();
+
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override

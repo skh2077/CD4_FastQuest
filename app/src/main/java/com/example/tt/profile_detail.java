@@ -66,18 +66,21 @@ public class profile_detail extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                             Toast.makeText(getApplicationContext(), "저장됨", Toast.LENGTH_SHORT).show();
+                            user.setNickname(nickname_tt.getEditText().getText().toString());
+                            user.setGender(userGender);
+                            user.setAge(Integer.parseInt(birth_tt.getEditText().getText().toString()));
+                            finish();
                             startActivity(new Intent(getApplicationContext(),profile_detail.class));
                     }
                 };//Response.Listener 완료
 
                 //Volley 라이브러리를 이용해서 실제 서버와 통신을 구현하는 부분
-                String url = "http://52.79.125.108/api/detail/" + user.getUser_id();
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("nickname", nickname_tt.getEditText().getText().toString());
                     jsonObject.put("gender", userGender);
                     jsonObject.put("age", Integer.parseInt(birth_tt.getEditText().getText().toString()));
-                    jsonObject.put("activity", 31);
+                    //jsonObject.put("activity", 31);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

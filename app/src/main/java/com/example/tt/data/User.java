@@ -17,7 +17,7 @@ public class User {
     public int score;
     private float activity;
     private float sociality;
-    private int gender;
+    private String gender;
     private int created;
     private int outside;
     public int age;
@@ -74,11 +74,11 @@ public class User {
     public int getScore() {
         return score;
     }
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
     public void setScore(int score) {

@@ -81,7 +81,7 @@ public class review_check extends AppCompatActivity {
 
         User user = User.getInstance();
 
-        url = "http://52.79.125.108/api/feed/user" + "/rbqbwbrb";// user.getUser_id()
+        url = "http://52.79.125.108/api/feed/user" + user.getUser_id();
         try {
             cat_json = read.readJsonFromUrl(url);
             cat_arr = new JSONArray(cat_json.get("temp").toString());

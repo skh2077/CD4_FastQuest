@@ -29,7 +29,7 @@ public class Login extends AppCompatActivity {
     User user;
     static SharedPreferences save;
     static SharedPreferences.Editor editor;
-
+    boolean mycheck_pre;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -41,11 +41,11 @@ public class Login extends AppCompatActivity {
 
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
-        editor.remove("page");
+        //editor.remove("page");
         editor.apply();
         final String myid = save.getString("id","");
         final String mypassword = save.getString("password","");
-        final boolean mycheck_pre = save.getBoolean("check_pre",false);
+         mycheck_pre= save.getBoolean("check_pre",false);
         if(!myid.equals("") && !mypassword.equals("")) {
             Response.Listener<String> responseListener = new Response.Listener<String>(){
                 @Override
@@ -68,30 +68,25 @@ public class Login extends AppCompatActivity {
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(mycheck_pre == false){
-                                                editor.putBoolean("check_pre", true);
-                                                editor.apply();
-                                                startActivity(new Intent(getApplicationContext(), pre_cat.class));
-                                            }
-                                            else {
-                                                int page_num = save.getInt("page", 0);
-                                                switch (page_num) {
-                                                    case 0:
-                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                        break;
-                                                    case 1:
-                                                        startActivity(new Intent(getApplicationContext(), CardInfo.class));
-                                                        break;
-                                                    case 2:
-                                                        startActivity(new Intent(getApplicationContext(), card_selected.class));
-                                                        break;
-                                                    case 3:
-                                                        startActivity(new Intent(getApplicationContext(), moim_card_selected.class));
-                                                        break;
-                                                    case 4:
-                                                        startActivity(new Intent(getApplicationContext(), createreview.class));
-                                                        break;
-                                                }
+
+                                            int page_num = save.getInt("page", 0);
+                                            switch (page_num) {
+                                                case 0:
+                                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                    break;
+                                                case 1:
+                                                    startActivity(new Intent(getApplicationContext(), CardInfo.class));
+                                                    break;
+                                                case 2:
+                                                    startActivity(new Intent(getApplicationContext(), card_selected.class));
+                                                    break;
+                                                case 3:
+                                                    startActivity(new Intent(getApplicationContext(), moim_card_selected.class));
+                                                    break;
+                                                case 4:
+                                                    startActivity(new Intent(getApplicationContext(), createreview.class));
+                                                    break;
+
                                             }
                                             finish();
                                         }
@@ -109,7 +104,7 @@ public class Login extends AppCompatActivity {
                     catch(Exception e){
                         e.printStackTrace();
                     }
-                }
+;                }
             };//Response.Listener 완료
 
             //Volley 라이브러리를 이용해서 실제 서버와 통신을 구현하는 부분
@@ -146,6 +141,11 @@ public class Login extends AppCompatActivity {
                                         editor.putString("id", userID);
                                         editor.putString("password", userPassword);
                                         editor.apply();
+                                        if(mycheck_pre == false){
+                                            editor.putBoolean("check_pre", true);
+                                            editor.apply();
+                                            startActivity(new Intent(getApplicationContext(), pre_cat.class));
+                                        }
                                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
                                         finish();
                                     }
