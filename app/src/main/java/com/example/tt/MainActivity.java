@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     User user;
     private FusedLocationProviderClient mfusedLocationProviderClient;
     Switch moim_switch;
+    Switch inside_switch;
     static SharedPreferences save;
     static SharedPreferences.Editor editor;
     TextView nick_and_username;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         small_view_score.setText("10");
 
         moim_switch = findViewById(R.id.switch_moim);
-
+        inside_switch = findViewById(R.id.switch_inside);
         BottomNavigationView nav_view = findViewById(R.id.nav_view);
         Menu menu = nav_view.getMenu();
         MenuItem menuItem = menu.getItem(0);
@@ -100,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_logout:
                         editor.remove("id");
                         editor.remove("password");
+                        editor.remove("check_pre");
+                        editor.remove("page");
                         editor.apply();
                         Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_LONG);
                         startActivity(new Intent(getApplicationContext(), start.class));
@@ -114,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "GO!", Toast.LENGTH_SHORT).show();
                 user.setIsmoim(moim_switch.isChecked());
+                user.setIsinside(inside_switch.isChecked());
                 startActivity(new Intent(getApplicationContext(), CardInfo.class));
             }
         });

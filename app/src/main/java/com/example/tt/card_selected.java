@@ -52,6 +52,7 @@ public class card_selected extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         user  = User.getInstance();
         super.onCreate(savedInstanceState);
+
         final Intent intent = getIntent();
         reload_num = intent.getExtras().getInt("reload");
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -59,6 +60,9 @@ public class card_selected extends AppCompatActivity {
 
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
+
+        editor.putInt("page", 2);
+        editor.apply();
 
         String url = "http://52.79.125.108/api/activity/" + cat_name;
         setContentView(R.layout.activity_card_selected);
@@ -138,6 +142,7 @@ public class card_selected extends AppCompatActivity {
             public void onClick(View v) {
                 if (finalPlay_activity.outside == 'n') {
                     // 실내 활동이라면
+                    Toast.makeText(card_selected.this, "실내활동 입니다.", Toast.LENGTH_SHORT).show();
                     startActivity(actintent);
                 } else {
                     // 외부 활동이라면
@@ -223,5 +228,9 @@ public class card_selected extends AppCompatActivity {
                     });
                 }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

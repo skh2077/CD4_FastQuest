@@ -41,6 +41,8 @@ public class Login extends AppCompatActivity {
 
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
+        editor.remove("page");
+        editor.apply();
         final String myid = save.getString("id","");
         final String mypassword = save.getString("password","");
         final boolean mycheck_pre = save.getBoolean("check_pre",false);
@@ -72,7 +74,24 @@ public class Login extends AppCompatActivity {
                                                 startActivity(new Intent(getApplicationContext(), pre_cat.class));
                                             }
                                             else {
-                                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                                int page_num = save.getInt("page", 0);
+                                                switch (page_num) {
+                                                    case 0:
+                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                        break;
+                                                    case 1:
+                                                        startActivity(new Intent(getApplicationContext(), CardInfo.class));
+                                                        break;
+                                                    case 2:
+                                                        startActivity(new Intent(getApplicationContext(), card_selected.class));
+                                                        break;
+                                                    case 3:
+                                                        startActivity(new Intent(getApplicationContext(), moim_card_selected.class));
+                                                        break;
+                                                    case 4:
+                                                        startActivity(new Intent(getApplicationContext(), createreview.class));
+                                                        break;
+                                                }
                                             }
                                             finish();
                                         }

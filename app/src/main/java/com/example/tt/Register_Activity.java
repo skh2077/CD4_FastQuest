@@ -8,11 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -36,6 +38,7 @@ public class Register_Activity extends AppCompatActivity {
         final EditText passwordConfirm = (EditText)findViewById(R.id.passwordText2);
         final EditText age = (EditText)findViewById(R.id.age);
         final EditText emailText = (EditText)findViewById(R.id.emailText);
+        final EditText nickname = (EditText)findViewById(R.id.nickname);
 
 
         RadioGroup genderGroup = (RadioGroup)findViewById(R.id.genderGroup);
@@ -151,6 +154,27 @@ public class Register_Activity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             try {
                                 String success = jsonResponse.get("token").toString();
+                                JSONObject jsonob = new JSONObject(jsonResponse.get("user").toString());
+                                String userid = jsonob.get("id").toString();
+                                String URL = "http://52.79.125.108/api/detail/" + userid;
+
+                                Response.Listener<JSONObject> r_profile_lister = new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                    }
+                                };//Response.Listener 완료
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("nickname", nickname.getText().toString());
+                                jsonObject.put("gender", userGender);
+                                jsonObject.put("age", Integer.parseInt(age.getText().toString()));
+                                jsonObject.put("activity", 0);
+
+                                profileRequest pRequest = new profileRequest(Request.Method.PUT, URL,jsonObject, r_profile_lister, null);
+                                RequestQueue r_p_queue = Volley.newRequestQueue(Register_Activity.this);
+
+                                r_p_queue.add(pRequest);
+
                                 AlertDialog.Builder builder = new AlertDialog.Builder(Register_Activity.this);
                                 dialog = builder.setMessage("Register Your ID")
                                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {

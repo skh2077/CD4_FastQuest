@@ -1,6 +1,7 @@
 package com.example.tt;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,14 +27,23 @@ public class CardInfo extends AppCompatActivity {
     Vector<category> value;
     static int reload_value = 5;
     User user;
+    static SharedPreferences save;
+    static SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = User.getInstance();
+
+        save = getSharedPreferences("mysave", MODE_PRIVATE);
+        editor = save.edit();
+        editor.putInt("page", 1);
+        editor.apply();
+
         final url_json read = new url_json();
         Intent get_intent = getIntent();
         try{
-            if(reload_value < get_intent.getExtras().getInt("reload")){
+            if(reload_value > get_intent.getExtras().getInt("reload")){
                 reload_value = get_intent.getExtras().getInt("reload");
             }
         }
@@ -55,9 +65,12 @@ public class CardInfo extends AppCompatActivity {
             e.printStackTrace();
         }
         String url = "http://52.79.125.108/api/users/" + user.getNickname();
+        if(user.getIsinside() == true) {
+            url = "http://52.79.125.108/api/select/" + user.getUsername();
+        }
         int moim_str_num = 0;
         if(user.getismoim() == true) {
-            url = "http://52.79.125.108/api/selectassemble/" + "skh20";
+            url = "http://52.79.125.108/api/selectassemble/" + user.getUsername();
             moim_str_num = 1;
         }
         value = new Vector<>();
@@ -67,6 +80,9 @@ public class CardInfo extends AppCompatActivity {
         do {
             if(lack == true) {
                 url = "http://52.79.125.108/api/users/" + user.getNickname();
+                if(user.getIsinside() == true) {
+                    url = "http://52.79.125.108/api/select/" + user.getUsername();
+                }
                 cur_card_num = value.size();
                 moim_str_num = 0;
             }
@@ -218,6 +234,9 @@ public class CardInfo extends AppCompatActivity {
                 break;
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
 
 }

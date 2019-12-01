@@ -51,9 +51,6 @@ public class chat extends Activity {
         name = user.getUsername();
         chatmessage = new ChatMessage(false, "");
 
-        chat_title = findViewById(R.id.chat_title);
-        chat_title.setText(room);
-
         buttonSend = (Button) findViewById(R.id.buttonSend);
 
         listView = (ListView) findViewById(R.id.listView1);
@@ -114,11 +111,6 @@ public class chat extends Activity {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-
-        chatData.setUserName(name);
-        chatData.setMessage("attended");
-        databaseReference.child(room).push().setValue(chatData);
-
 
     }
 

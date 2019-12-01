@@ -66,8 +66,12 @@ public class moim_card_selected extends AppCompatActivity {
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         String cat_name = intent.getExtras().getString("cat_name");
         JSONObject moim_act = null;
+
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
+        editor.putInt("page", 3);
+        editor.apply();
+
         Activity play_activity = new Activity();
         try {
             moim_act = new JSONObject(intent.getExtras().getString("cat_all"));
@@ -216,5 +220,9 @@ public class moim_card_selected extends AppCompatActivity {
                     });
                 }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

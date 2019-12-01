@@ -3,6 +3,7 @@ package com.example.tt;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -52,6 +53,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+
 public class createreview extends AppCompatActivity {
     private final int CAMERA_CODE = 0;
     private final int GALLERY_CODE = 1;
@@ -79,6 +81,9 @@ public class createreview extends AppCompatActivity {
 
     String upload_id;
 
+    static SharedPreferences save;
+    static SharedPreferences.Editor editor;
+
     public void add_review(View view) throws JSONException {
 
         if (review_title.getText().toString().equals("")) {
@@ -89,25 +94,46 @@ public class createreview extends AppCompatActivity {
             new AlertDialog.Builder(this).setTitle("내용을 입력해주세요").setPositiveButton("OK", null).show();
             return;
         }
+        if(image_file == null) {
+            new AlertDialog.Builder(this).setTitle("이미지 없습니다.").setPositiveButton("OK", null).show();
+            return;
+        }
 
-
-        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>(){
+        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                try{
+                try {
                     upload_id = response.get("id").toString();
-                    int a = 0;
-                    int b= 0;
-                }
-                catch(Exception e){
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), image_file);
+                    MultipartBody.Part body = MultipartBody.Part.createFormData("image", image_file.getName(), requestBody);
+
+                    Call<FileINfo> call = fileService.upload(upload_id, body);
+
+                    call.enqueue(new Callback<FileINfo>() {
+                        @Override
+                        public void onResponse(Call<FileINfo> call, retrofit2.Response<FileINfo> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(createreview.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(createreview.this, image_file.getName(), Toast.LENGTH_SHORT).show();
+                                editor.remove("page");
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FileINfo> call, Throwable t) {
+                            Toast.makeText(createreview.this, "ERROR: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         };//Response.Listener 완료
         Intent idintent = getIntent();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("title",review_title.getText().toString());
+        jsonObject.put("title", review_title.getText().toString());
         jsonObject.put("content", review_content.getText().toString());
         String actid = idintent.getExtras().getString("act_id");
         //jsonObject.put("act", Integer.parseInt(actid));
@@ -124,32 +150,10 @@ public class createreview extends AppCompatActivity {
 
 
         //ReviewRequest reviewRequest = new ReviewRequest(review_title.getText().toString(),review_content.getText().toString(), photostring, responseListener);
-        ReviewRequest reviewRequest = new ReviewRequest(Request.Method.POST, jsonObject, responseListener,null);
+        ReviewRequest reviewRequest = new ReviewRequest(Request.Method.POST, jsonObject, responseListener, null);
         RequestQueue queue = Volley.newRequestQueue(createreview.this);
 
         queue.add(reviewRequest);
-
-        if(image_file != null) {
-            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), image_file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("image", image_file.getName(), requestBody);
-
-            Call<FileINfo> call = fileService.upload(body);
-            call.enqueue(new Callback<FileINfo>() {
-                @Override
-                public void onResponse(Call<FileINfo> call, retrofit2.Response<FileINfo> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(createreview.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<FileINfo> call, Throwable t) {
-                    Toast.makeText(createreview.this, "ERROR: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    ;
-
-                }
-            });
-        }
     }
 
 
@@ -162,6 +166,11 @@ public class createreview extends AppCompatActivity {
         image = (ImageView)findViewById(R.id.input_image);
         review_title = (EditText)findViewById(R.id.input_reviw_title);
         review_content = (EditText)findViewById(R.id.input_reviw_content);
+
+        save = getSharedPreferences("mysave", MODE_PRIVATE);
+        editor = save.edit();
+        editor.putInt("page", 4);
+        editor.apply();
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -362,8 +371,7 @@ public class createreview extends AppCompatActivity {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "카메라 권한 체크 거부", Toast.LENGTH_SHORT).show();
                     finish();
-                }
-                else {
+                } else {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                             && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "저장소 권한 체크 거부", Toast.LENGTH_SHORT).show();
@@ -372,5 +380,9 @@ public class createreview extends AppCompatActivity {
                 }
                 break;
         }
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

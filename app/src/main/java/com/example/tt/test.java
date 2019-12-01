@@ -57,7 +57,7 @@ public class test extends AppCompatActivity {
                 RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), image);
                 MultipartBody.Part body = MultipartBody.Part.createFormData("image", image.getName(), requestBody);
 
-                Call<FileINfo> call = fileService.upload(body);
+                Call<FileINfo> call = fileService.upload("2", body);
                 call.enqueue(new Callback<FileINfo>() {
                     @Override
                     public void onResponse(Call<FileINfo> call, Response<FileINfo> response) {

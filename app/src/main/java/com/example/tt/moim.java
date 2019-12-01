@@ -47,6 +47,9 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.tt.data.User;
 
+import com.example.tt.model.FileINfo;
+import com.example.tt.remote.FileService;
+import com.example.tt.remote.moimAPIUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -65,6 +68,12 @@ import java.io.File;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class moim extends AppCompatActivity {
 
@@ -86,11 +95,32 @@ public class moim extends AppCompatActivity {
     ImageView create_moim_photo;
     User user;
 
+    String upload_moim_id;
+
+    private final int CAMERA_CODE = 0;
+    private final int GALLERY_CODE = 1;
+
+    DialogInterface.OnClickListener camerListener;
+    DialogInterface.OnClickListener albumListener;
+    DialogInterface.OnClickListener cancleListener;
+
+    Bitmap photo;
+
+    private Uri photoUri;
+    private String currentPhotoPath;//실제 사진 파일 경로
+    String mImageCaptureName;//이미지 이름
+
+    String imagePath;
+    File image_file;
+
+    FileService fileService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moim);
+
+        fileService = moimAPIUtils.getFileService();
 
         BottomNavigationView nav_view = findViewById(R.id.nav_view);
         Menu menu = nav_view.getMenu();
@@ -171,6 +201,27 @@ public class moim extends AppCompatActivity {
                     create_moim_photo = popupView.findViewById(R.id.creat_moim_photo);
                     final Button add_photo = popupView.findViewById(R.id.add_photo);
                     final Button cancel = popupView.findViewById(R.id.Cancel);
+
+                    List<String> spinnerArray = new ArrayList<>();
+                    try {
+                        cat_json = read.readJsonFromUrl(url);
+                        cat_arr = new JSONArray(cat_json.get("temp").toString());
+                        for(int i = 0;i<cat_arr.length();i++){
+                            JSONObject temp = (JSONObject) cat_arr.get(i);
+                            spinnerArray.add(temp.get("cat_name").toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+
+                    spinner =popupView.findViewById(R.id.spinner);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(moim.this,android.R.layout
+                            .simple_spinner_dropdown_item,spinnerArray);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -227,54 +278,56 @@ public class moim extends AppCompatActivity {
                                 new AlertDialog.Builder(moim.this).setTitle("내용을 입력해주세요").setPositiveButton("OK", null).show();
                                 return;
                             }
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                            try {
-                                photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                            } catch (Exception e) {
+                            if(image_file == null) {
                                 new AlertDialog.Builder(moim.this).setTitle("사진을 입력해주세요").setPositiveButton("OK", null).show();
-                                return;
+                                //return;
                             }
-                            byte[] photobyte = stream.toByteArray();
-                            String photostring = Base64.encodeToString(photobyte, 0);
-
                             String create_moim_url = "http://52.79.125.108/api/assemble/";
                             JSONObject jsonObject = new JSONObject();
                             user = User.getInstance();
                             Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
+                                    try {
+                                        upload_moim_id = response.get("id").toString();
+                                        Toast.makeText(moim.this, "id 받기 성공", Toast.LENGTH_SHORT);
+                                        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), image_file);
+                                        MultipartBody.Part body = MultipartBody.Part.createFormData("photo", image_file.getName(), requestBody);
+
+                                        Call<FileINfo> call = fileService.upload(upload_moim_id, body);
+
+                                        call.enqueue(new Callback<FileINfo>() {
+                                            @Override
+                                            public void onResponse(Call<FileINfo> call, retrofit2.Response<FileINfo> response) {
+                                                if (response.isSuccessful()) {
+                                                    Toast.makeText(moim.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(moim.this, image_file.getName(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<FileINfo> call, Throwable t) {
+                                                Toast.makeText(moim.this, "ERROR: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                     Toast.makeText(moim.this, "연결 성공", Toast.LENGTH_SHORT);
                                 }
                             };
-                            List<String> spinnerArray = new ArrayList<>();
+
                             try {
-                                cat_json = read.readJsonFromUrl(url);
-                                cat_arr = new JSONArray(cat_json.get("temp").toString());
-                                for(int i = 0;i<cat_arr.length();i++){
-                                    JSONObject temp = (JSONObject) cat_arr.get(i);
-                                    spinnerArray.add(temp.get("cat_name").toString());
-                                }
                                 jsonObject.put("title", create_moim_tilte.getText());
                                 jsonObject.put("content", create_moim_content.getText());
-                                jsonObject.put("photo", photostring);
                                 jsonObject.put("author", user.getUser_id());
                             } catch (JSONException e) {
-                                e.printStackTrace();
-                            }catch (IOException e){
                                 e.printStackTrace();
                             }
 
                             moimRequest mRequest = new moimRequest(Request.Method.POST, create_moim_url, jsonObject, listener, null);
                             RequestQueue moim_request = Volley.newRequestQueue(moim.this);
-
-                            spinner =popupView.findViewById(R.id.spinner);
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(moim.this,android.R.layout
-                            .simple_spinner_dropdown_item,spinnerArray);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(adapter);
-                            //moim_request.add(mRequest);
-
+                            moim_request.add(mRequest);
 
                             //Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
                         }
@@ -317,23 +370,6 @@ public class moim extends AppCompatActivity {
 
         return this.num;
     }
-
-    private final int CAMERA_CODE = 0;
-    private final int GALLERY_CODE = 1;
-
-    DialogInterface.OnClickListener camerListener;
-    DialogInterface.OnClickListener albumListener;
-    DialogInterface.OnClickListener cancleListener;
-
-    Bitmap photo;
-
-    private Uri photoUri;
-    private String currentPhotoPath;//실제 사진 파일 경로
-    String mImageCaptureName;//이미지 이름
-
-    String imagePath;
-    File image_file;
-
 
     public void add_review(View view) throws JSONException {
 
