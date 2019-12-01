@@ -1,5 +1,6 @@
 package com.example.tt;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,9 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.tt.model.FileINfo;
 import com.example.tt.remote.APIUtils;
 import com.example.tt.remote.FileService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -102,4 +109,29 @@ public class test extends AppCompatActivity {
         cursor.close();
         return result;
     }
+
+    void edit_score(String user_id, int score, final Context context) {
+        // 수정하면 유저 id 받으면 통신하는게 완성 됨
+        com.android.volley.Response.Listener<JSONObject> pjresponseListener = new com.android.volley.Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(context, "10점이 적립되었습니다.", Toast.LENGTH_LONG);
+
+            }
+        };
+        JSONObject pointj = new JSONObject();
+        try {
+            pointj.put("score", (int)score);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String URL = "http://52.79.125.108/users/" + user_id;
+        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+        RequestQueue pjqueue = Volley.newRequestQueue(context);
+        pjqueue.add(preq);
+    }
+
+
+
 }
