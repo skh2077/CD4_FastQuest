@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class CardInfo extends AppCompatActivity {
-    Button card1, card2, card3, card4, card5, Power_off;
+    Button card1, card2, card3, card4, card5, Power_off, Give_up;
     Vector<category> value;
     static int reload_value = 5;
     User user;
@@ -36,11 +36,11 @@ public class CardInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = User.getInstance();
-
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
         editor.putInt("page", 1);
-        editor.apply();
+
+        reload_value = save.getInt("reload",5);
 
         final url_json read = new url_json();
         Intent get_intent = getIntent();
@@ -135,6 +135,16 @@ public class CardInfo extends AppCompatActivity {
                 AlertDialog alert = builder.create();
                 alert.setTitle("종료 알림창");
                 alert.show();
+            }
+        });
+
+        Give_up = (Button)findViewById(R.id.give_up);
+        Give_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.remove("reload");
+                editor.remove("page");
+                editor.remove("activity");
             }
         });
 
