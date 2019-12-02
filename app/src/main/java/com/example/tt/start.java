@@ -32,7 +32,7 @@ public class start extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(),User_survey.class));
+                startActivity(new Intent(getApplicationContext(),Login.class));
 
             }
         });

@@ -81,4 +81,5 @@
     <string name="nickname">닉네임</string>
     <string name="power_off">종료</string>
     <string name="give_up">포기</string>
+    <string name="chattiing">채팅 참여</string>
 </resources>

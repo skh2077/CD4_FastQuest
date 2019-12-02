@@ -42,13 +42,10 @@ public class CardInfo extends AppCompatActivity {
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
         editor.putInt("page", 1);
-
+        reload_value = save.getInt("reload",5);
         final url_json read = new url_json();
         Intent get_intent = getIntent();
         try{
-            if(reload_value > save.getInt("reload",5)) {
-                reload_value = save.getInt("reload",5);
-            }
             if(reload_value > get_intent.getExtras().getInt("reload")){
                 reload_value = get_intent.getExtras().getInt("reload");
             }
@@ -130,6 +127,8 @@ public class CardInfo extends AppCompatActivity {
                 intent.putExtra("reload", reload_value);
                 intent.putExtra("cat_name", value.get(0).cat_name);
                 intent.putExtra("cat_all", value.get(0).getCat_all());
+                editor.putString("cat_all", value.get(0).getCat_all());
+                editor.apply();
                 startActivity(intent);
             }
         });
@@ -147,6 +146,8 @@ public class CardInfo extends AppCompatActivity {
                 intent.putExtra("reload", reload_value);
                 intent.putExtra("cat_name", value.get(1).cat_name);
                 intent.putExtra("cat_all", value.get(1).getCat_all());
+                editor.putString("cat_all", value.get(0).getCat_all());
+                editor.apply();
                 startActivity(intent);
             }
         });
@@ -164,6 +165,8 @@ public class CardInfo extends AppCompatActivity {
                 intent.putExtra("reload", reload_value);
                 intent.putExtra("cat_name", value.get(2).cat_name);
                 intent.putExtra("cat_all", value.get(2).getCat_all());
+                editor.putString("cat_all", value.get(0).getCat_all());
+                editor.apply();
                 startActivity(intent);
             }
         });
@@ -181,6 +184,8 @@ public class CardInfo extends AppCompatActivity {
                 intent.putExtra("reload", reload_value);
                 intent.putExtra("cat_name", value.get(3).cat_name);
                 intent.putExtra("cat_all", value.get(3).getCat_all());
+                editor.putString("cat_all", value.get(0).getCat_all());
+                editor.apply();
                 startActivity(intent);
             }
         });
@@ -198,6 +203,8 @@ public class CardInfo extends AppCompatActivity {
                 intent.putExtra("reload", reload_value);
                 intent.putExtra("cat_name", value.get(4).cat_name);
                 intent.putExtra("cat_all", value.get(4).getCat_all());
+                editor.putString("cat_all", value.get(0).getCat_all());
+                editor.apply();
                 startActivity(intent);
             }
         });
@@ -219,6 +226,7 @@ public class CardInfo extends AppCompatActivity {
                     editor.remove("reload");
                     editor.remove("page");
                     editor.remove("activity");
+                    reload_value = 5;
                     //스코어 하락 시킬 것
                     edit_score(user.getUser_id(),  -5);
 

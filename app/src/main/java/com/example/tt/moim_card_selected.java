@@ -1,6 +1,7 @@
 package com.example.tt;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,9 +14,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.tt.data.Activity;
 import com.example.tt.data.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -39,6 +44,7 @@ import java.util.TimeZone;
 public class moim_card_selected extends AppCompatActivity {
     Button reloadButton;
     Button start;
+    Button attend_chatting;
     TextView act_title;
     TextView act_detail;
     Intent mintent;
@@ -54,7 +60,8 @@ public class moim_card_selected extends AppCompatActivity {
     private BackgroundService mBackgroundService;
 
     int reload_num;
-
+    float add_score = 10;
+    JSONObject moim_act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,19 +69,21 @@ public class moim_card_selected extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moim_card_selected);
         final Intent intent = getIntent();
-        reload_num = intent.getExtras().getInt("reload");
+
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        String cat_name = intent.getExtras().getString("cat_name");
-        JSONObject moim_act = null;
 
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
         editor.putInt("page", 3);
         editor.apply();
 
+        reload_num = save.getInt("reload",5);
+
+        final String str_act = save.getString("activity","");
+
         Activity play_activity = new Activity();
         try {
-            moim_act = new JSONObject(intent.getExtras().getString("cat_all"));
+            moim_act = new JSONObject(save.getString("cat_all",""));
             play_activity = new Activity();
             play_activity.title = moim_act.get("title").toString();
             play_activity.content = moim_act.get("content").toString();
@@ -108,6 +117,21 @@ public class moim_card_selected extends AppCompatActivity {
         timePicker.setHour(play_activity.getDate().getHours());
         timePicker.setMinute(play_activity.getDate().getMinutes());
 
+        attend_chatting = (Button)findViewById(R.id.chatting);
+        attend_chatting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), chat.class);
+                try {
+                    intent.putExtra("room_name", moim_act.get("title").toString() + moim_act.get("id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                startActivity(intent);
+            }
+        });
+
+
         reloadButton = (Button)findViewById(R.id.Reload2);
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,10 +140,28 @@ public class moim_card_selected extends AppCompatActivity {
                     reload_num --;
                     Intent reintent = new Intent(getApplicationContext(), CardInfo.class);
                     reintent.putExtra("reload", reload_num);
+                    editor.remove("activity");
+                    editor.apply();
                     startActivity(reintent);
-                }
-                else{
-                    Toast.makeText(moim_card_selected.this, "reload 횟수가 끝났습니다.", Toast.LENGTH_LONG);
+                }else{
+                    new AlertDialog.Builder(moim_card_selected.this).setTitle("Reload 횟수가 끝났습니다.\n 포기하겠습니까?") .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            editor.remove("reload");
+                            editor.remove("page");
+                            editor.remove("activity");
+                            //스코어 하락 시킬 것
+                            edit_score(user.getUser_id(),  -5);
+
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }
+                    }).create().show();
                 }
             }
         });
@@ -147,6 +189,7 @@ public class moim_card_selected extends AppCompatActivity {
                         Date goal_time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(gtime);
                         current = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(cur_str);
                         if (Math.abs(goal_time.getTime() - current.getTime()) < 1000 * 60 * 30) {
+                            actintent.putExtra("save_score", add_score);
                             startActivity(actintent);
                         } else {
                             Toast.makeText(moim_card_selected.this, "약속시간 30분 내외로 가능합니다.", Toast.LENGTH_SHORT).show();
@@ -154,10 +197,6 @@ public class moim_card_selected extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
-                    LatLng loc_temp = new LatLng(0, 0);
-                    user.setUser_location(loc_temp);
                 }
             }
         });
@@ -221,8 +260,52 @@ public class moim_card_selected extends AppCompatActivity {
                 }
         }
     }
+
+    private BackPressHandler backPressHandler = new BackPressHandler(this);
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        backPressHandler.onBackPressed();
+    }
+
+
+    public void edit_score(String user_id, int score) {
+        // 수정하면 유저 id 받으면 통신하는게 완성 됨
+        int temp_score = 0;
+        com.android.volley.Response.Listener<JSONObject> pjresponseListener = new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    user.setScore(Integer.parseInt(response.get("score").toString()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        String URL = "http://52.79.125.108/api/detail/" + user_id;
+        //String URL = "http://52.79.125.108/api/user/" +  user_name;
+        url_json read = new url_json();
+        JSONObject jtemp_score = null;
+        try {
+            jtemp_score = read.readJsonFromUrl(URL);
+            JSONObject temp = new JSONObject(jtemp_score.get("temp").toString());
+            temp_score = Integer.parseInt(temp.get("score").toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject pointj = new JSONObject();
+        try {
+            pointj.put("score", temp_score +score);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+        RequestQueue pjqueue = Volley.newRequestQueue(this);
+        pjqueue.add(preq);
     }
 }

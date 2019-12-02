@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
 
-        editor.remove("activity");
-        editor.remove("page");
-        editor.remove("reload");
-        editor.apply();
+        //editor.remove("activity");
+        //editor.remove("page");
+        //editor.remove("reload");
+        //editor.apply();
 
         user = User.getInstance();
 
