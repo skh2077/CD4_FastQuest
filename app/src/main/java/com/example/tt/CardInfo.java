@@ -226,6 +226,7 @@ public class CardInfo extends AppCompatActivity {
                     editor.remove("reload");
                     editor.remove("page");
                     editor.remove("activity");
+                    editor.apply();
                     reload_value = 5;
                     //스코어 하락 시킬 것
                     edit_score(user.getUser_id(),  -5);
