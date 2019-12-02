@@ -110,7 +110,7 @@ public class review extends AppCompatActivity {
                 data.setTitle(temp.get("title").toString());
                 data.setContent(temp.get("content").toString());
                 data.setId(temp.get("id").toString());
-                data.setAuthor(temp.get("nickname").toString());
+                data.setAuthor(temp.get("username").toString());
                 // data.setResId(temp.get("image");
                 //data.setResId(listResId.get(i));
                 data.setUrlImage(temp.get("image").toString());

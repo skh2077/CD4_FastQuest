@@ -270,8 +270,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 }
             }
         };
-        String URL = "http://52.79.125.108/api/detail/" + user_id;
-        //String URL = "http://52.79.125.108/api/user/" +  user_name;
+        //String URL = "http://52.79.125.108/api/detail/" + user_id;
+        String URL = "http://52.79.125.108/api/user/" +  user_id;
         url_json read = new url_json();
         JSONObject jtemp_score = null;
         try {
@@ -291,7 +291,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             e.printStackTrace();
         }
 
-        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+        addpointRequest preq = new addpointRequest(Request.Method.POST, pointj, URL, pjresponseListener, null);
         RequestQueue pjqueue = Volley.newRequestQueue(context);
         pjqueue.add(preq);
     }

@@ -68,6 +68,7 @@ public class moim_activity extends Fragment {
                 data.setTitle(temp.get("cat_name").toString());
                 data.setAuthor(temp.get("act_name").toString());
                 data.setContent(temp.get("content").toString());
+                data.setId(temp.get("id").toString());
                 adapter.addItem(data);
                 //data.setId(Integer.parseInt(temp.get("id").toString()));
 

@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -28,7 +31,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class CardInfo extends AppCompatActivity {
-    Button card1, card2, card3, card4, card5;
+    TextView card1, card2, card3, card4, card5;
     Vector<category> value;
     static int reload_value = 5;
     User user;
@@ -113,7 +116,7 @@ public class CardInfo extends AppCompatActivity {
 
         setContentView(R.layout.activity_card_info);
 
-        card1 = (Button) findViewById(R.id.card1);
+        card1 = (TextView) findViewById(R.id.card1);
         card_set(value.get(0).cat_name, (int) Math.abs(value.get(0).activity_rate - user.getActivity()), card1);
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +135,7 @@ public class CardInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        card2 = (Button) findViewById(R.id.card2);
+        card2 = (TextView) findViewById(R.id.card2);
         card_set(value.get(1).cat_name, (int) Math.abs(value.get(1).activity_rate - user.getActivity()), card2);
         card2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +154,7 @@ public class CardInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        card3 = (Button) findViewById(R.id.card3);
+        card3 = (TextView) findViewById(R.id.card3);
         card_set(value.get(2).cat_name, (int) Math.abs(value.get(2).activity_rate - user.getActivity()), card3);
         card3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +173,7 @@ public class CardInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        card4 = (Button) findViewById(R.id.card4);
+        card4 = (TextView) findViewById(R.id.card4);
         card_set(value.get(3).cat_name, (int) Math.abs(value.get(3).activity_rate - user.getActivity()), card4);
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +192,7 @@ public class CardInfo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        card5 = (Button) findViewById(R.id.card5);
+        card5 = (TextView) findViewById(R.id.card5);
         card_set(value.get(4).cat_name, (int) Math.abs(value.get(4).activity_rate - user.getActivity()), card5);
         card5.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,30 +248,34 @@ public class CardInfo extends AppCompatActivity {
     }
 
 
-    public void card_set(String text, int value, Button card) {
+    public void card_set(String text, int value, TextView card) {
         value = value /20;
         card.setText(text);
         card.setTextColor(Color.BLACK);
-        card.setTextSize(20);
+        card.setTextSize(30);
         card.setTypeface(card.getTypeface(), Typeface.BOLD);
         switch (value) {
+
             case 0:
-                card.setBackgroundColor(Color.GRAY);
+                card.setBackground(getDrawable(R.drawable.graycard));
                 break;
             case 1:
-                card.setBackgroundColor(Color.GREEN);
+                card.setBackground(getDrawable(R.drawable.greencard));
                 break;
             case 2:
-                card.setBackgroundColor(Color.BLUE);
+                card.setBackground(getDrawable(R.drawable.bluecard));
                 break;
             case 3:
-                card.setBackgroundColor(Color.parseColor("#FF00DD"));
+                card.setBackground(getDrawable(R.drawable.pinkcard));
                 break;
             case 4 :
-                card.setBackgroundColor(Color.YELLOW);
+                card.setBackground(getDrawable(R.drawable.yellowcard));
                 break;
         }
     }
+
+
+
 
     private BackPressHandler backPressHandler = new BackPressHandler(this);
 

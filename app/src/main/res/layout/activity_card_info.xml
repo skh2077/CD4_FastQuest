@@ -25,10 +25,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <TextView
         android:id="@+id/card1"
         android:layout_width="100dp"
         android:layout_height="180dp"
+        android:gravity="center"
+        android:fontFamily="@font/myfontsec"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -36,10 +38,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25" />
 
-    <Button
+    <TextView
         android:id="@+id/card2"
         android:layout_width="100dp"
         android:layout_height="180dp"
+        android:gravity="center"
+        android:fontFamily="@font/myfontsec"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
@@ -47,19 +51,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25" />
 
-    <Button
+    <TextView
         android:id="@+id/card3"
         android:layout_width="100dp"
         android:layout_height="180dp"
+        android:gravity="center"
+        android:fontFamily="@font/myfontsec"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/card4"
         android:layout_width="100dp"
         android:layout_height="180dp"
+        android:gravity="center"
+        android:fontFamily="@font/myfontsec"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
@@ -67,10 +75,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.75" />
 
-    <Button
+    <TextView
         android:id="@+id/card5"
         android:layout_width="100dp"
         android:layout_height="180dp"
+        android:fontFamily="@font/myfontsec"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"

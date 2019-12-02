@@ -48,7 +48,7 @@ public class MoimAdapter extends RecyclerView.Adapter<MoimAdapter.ItemViewHolder
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         context = parent.getContext();
-       // View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.moim_item, parent, false);
+       // View view = LayoutInflater.from(parent.getContext()).inflate(R.font.moim_item, parent, false);
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.moim_item, parent, false);
         GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) v.getLayoutParams();
@@ -177,8 +177,8 @@ public class MoimAdapter extends RecyclerView.Adapter<MoimAdapter.ItemViewHolder
                 }
             }
         };
-        String URL = "http://52.79.125.108/api/detail/" + user_id;
-        //String URL = "http://52.79.125.108/api/user/" +  user_name;
+        //String URL = "http://52.79.125.108/api/detail/" + user_id;
+        String URL = "http://52.79.125.108/api/user/" +  user_id;
         url_json read = new url_json();
         JSONObject jtemp_score = null;
         try {
@@ -193,12 +193,12 @@ public class MoimAdapter extends RecyclerView.Adapter<MoimAdapter.ItemViewHolder
 
         JSONObject pointj = new JSONObject();
         try {
-            pointj.put("score", temp_score +score);
+            pointj.put("score", (int)(temp_score +score));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+        addpointRequest preq = new addpointRequest(Request.Method.POST, pointj, URL, pjresponseListener, null);
         RequestQueue pjqueue = Volley.newRequestQueue(context);
         pjqueue.add(preq);
     }

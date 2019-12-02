@@ -63,7 +63,7 @@ public class moim_moim extends Fragment {
                 data.setId(temp.get("id").toString());
                 JSONObject tempobject = read.readJsonFromUrl(userUrl + temp.get("author").toString());
                 temparr = new JSONObject(tempobject.get("temp").toString());
-                data.setAuthor(temparr.get("nickname").toString());
+                data.setAuthor(temparr.get("username").toString());
                 adapter.addItem(data);
                 //data.setId(Integer.parseInt(temp.get("id").toString()));
 
