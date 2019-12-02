@@ -95,6 +95,7 @@ public class Login extends AppCompatActivity {
                             user.setEmail(jsonuser.get("email").toString());
                             user.setNickname(jsonuser.get("nickname").toString());
                             user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
+                            user.setActivity(Float.parseFloat(jsonuser.get("activity").toString()));
                             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                             dialog = builder.setMessage("success Login")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -147,6 +148,7 @@ public class Login extends AppCompatActivity {
                         user.setNickname(jsonuser.get("nickname").toString());
                         //user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
                         user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
+                        user.setActivity(Float.parseFloat(jsonuser.get("activity").toString()));
                         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                         dialog = builder.setMessage("success Login")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
