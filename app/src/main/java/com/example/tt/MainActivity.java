@@ -47,6 +47,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+
+
+        if (isFirstRun) {
+            //show start activity
+
+            startActivity(new Intent(MainActivity.this, User_survey.class));
+            Toast.makeText(MainActivity.this, "First Run", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).commit();
 
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
