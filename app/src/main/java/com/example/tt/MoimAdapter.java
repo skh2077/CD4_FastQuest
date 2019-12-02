@@ -100,6 +100,7 @@ public class MoimAdapter extends RecyclerView.Adapter<MoimAdapter.ItemViewHolder
 
             textView1.setText(data.getTitle());
             textView2.setText(data.getAuthor());
+            textView3.setText(data.getDate());
             writen_id = data.getAuthor();
             //textView3.setText(data.getContent());
             if(data.getUrlImage()!= "null"){

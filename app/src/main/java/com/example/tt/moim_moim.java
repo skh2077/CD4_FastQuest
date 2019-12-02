@@ -60,6 +60,7 @@ public class moim_moim extends Fragment {
                 data.setTitle(temp.get("title").toString());
                 data.setContent(temp.get("content").toString());
                 data.setUrlImage(temp.get("photo").toString());
+                data.setDate(temp.get("time").toString());
                 data.setId(temp.get("id").toString());
                 JSONObject tempobject = read.readJsonFromUrl(userUrl + temp.get("author").toString());
                 temparr = new JSONObject(tempobject.get("temp").toString());
