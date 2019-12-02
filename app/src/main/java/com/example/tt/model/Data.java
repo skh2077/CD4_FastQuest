@@ -10,16 +10,25 @@ public class Data {
     private int resId;
     private Bitmap image;
     private String urlImage;
+    private boolean isliked;
+    private String id;
 
-    public int getId() {
+
+    public boolean getIsliked() {
+        return isliked;
+    }
+
+    public void setIsliked(boolean isliked) {
+        this.isliked = isliked;
+    }
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    private int id;
 
     public String getUrlImage() {
         return urlImage;

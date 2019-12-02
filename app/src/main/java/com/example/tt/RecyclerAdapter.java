@@ -4,6 +4,7 @@ package com.example.tt;
 import android.animation.ValueAnimator;
 import android.content.Context;
 
+import android.content.Intent;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +19,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.tt.data.User;
 import com.example.tt.model.Data;
+import com.example.tt.model.FileINfo;
 import com.google.gson.JsonObject;
 import com.like.IconType;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
 
@@ -41,12 +51,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     private int prePosition = -1;
     User user = User.getInstance();
     String writen_id;
+    String feed_id;
+    ArrayList<String> slike_list_save = new ArrayList<String>();
+    url_json read = new url_json();
+    String url;
+    private JSONObject cat_json = null;
+    private JSONArray cat_arr = null;
+    JSONObject my_review_json;
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         context = parent.getContext();
+        slike_list_save.add("tmp");
+        add_feed_id();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         return new ItemViewHolder(view);
     }
@@ -96,10 +115,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             textView1.setText(data.getTitle());
             textView2.setText(data.getAuthor());
             writen_id = data.getAuthor();
+            feed_id = data.getId();
             textView3.setText(data.getContent());
             imageView1.setImageResource(data.getResId());
             //imageView2.setImageResource(data.getResId());
             Picasso.get().load(data.getUrlImage()).into(imageView2);
+
             likebutton.setIcon(IconType.Thumb);
             likebutton.setScaleX(1.5f);
             likebutton.setScaleY(1.5f);
@@ -118,13 +139,62 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 @Override
                 public void liked(LikeButton likeButton) {
                     //생김+1
-                    edit_score(writen_id, 1);
+                    if (!slike_contains(feed_id)) {
+                        edit_score(writen_id,1);
+                        slike_list_save.add(feed_id);
+
+                        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                            }
+                        };//Response.Listener 완료
+
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("username", user.getUsername());
+                            jsonObject.put("feed", Integer.parseInt(feed_id));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        review_like_Request review_like_request = new review_like_Request(Request.Method.POST, jsonObject, responseListener, null);
+                        RequestQueue queue = Volley.newRequestQueue(context);
+
+                        queue.add(review_like_request);
+                    }
+
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
                         //사라짐 -1
-                    edit_score(writen_id,-1);
+                    if (slike_contains(feed_id)) {
+                        edit_score(writen_id,-1);
+                        slike_list_save.remove(feed_id);
+
+                        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                            }
+                        };//Response.Listener 완료
+
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("username", user.getUsername());
+                            jsonObject.put("feed", Integer.parseInt(feed_id));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        review_like_Request review_like_request = new review_like_Request(Request.Method.DELETE, jsonObject, responseListener, null);
+                        RequestQueue queue = Volley.newRequestQueue(context);
+
+                        queue.add(review_like_request);
+                    }
                 }
             });
         }
@@ -225,4 +295,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         RequestQueue pjqueue = Volley.newRequestQueue(context);
         pjqueue.add(preq);
     }
+
+    boolean slike_contains(String temp) {
+        for(int j =0; j<slike_list_save.size(); j++) {
+            if(slike_list_save.get(j).equals(temp)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    void add_feed_id() {
+        url = "http://52.79.125.108/api/likefeed/user/"+ user.getUsername();
+        try {
+            cat_json = read.readJsonFromUrl(url);
+            cat_arr = new JSONArray(cat_json.get("temp").toString());
+            for(int j =0; j<cat_arr.length(); j++) {
+                my_review_json = (JSONObject) cat_arr.get(j);
+                slike_list_save.add(my_review_json.get("feed").toString());
+            }
+
+        }
+        catch (Exception e) {
+
+        }
+    }
+
 }

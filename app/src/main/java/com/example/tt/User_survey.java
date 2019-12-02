@@ -130,7 +130,7 @@ public class User_survey extends AppCompatActivity implements SeekBar.OnSeekBarC
                 seekBar3_score=value;
                 break;
         }
-        Toast.makeText(User_survey.this, "Seek bar progress is :" + value,
+        Toast.makeText(User_survey.this, String.valueOf(value),
                 Toast.LENGTH_SHORT).show();
     }
 

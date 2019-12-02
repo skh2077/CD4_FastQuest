@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="date"
-            android:hint="Date ex)2019-12-03:09:00:00"
+            android:hint="Date ex)2019-12-03 09:00:00"
             android:selectAllOnFocus="true" />
 
         <ImageView

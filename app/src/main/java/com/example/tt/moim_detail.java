@@ -50,7 +50,7 @@ public class moim_detail extends AppCompatActivity {
 
     public void Attend_moim(View view){
         Intent intent = new Intent(getApplicationContext(), chat.class);
-        intent.putExtra("room_name", title + String.valueOf(getIntent().getIntExtra("id", -1)));
+        intent.putExtra("room_name", title + getIntent().getStringExtra("id"));
         startActivity(intent);
     }
 

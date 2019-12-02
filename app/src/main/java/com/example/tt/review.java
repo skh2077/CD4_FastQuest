@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class review extends AppCompatActivity {
@@ -44,6 +45,7 @@ public class review extends AppCompatActivity {
     String image;
     String act;
     String author;
+
 
 
     @Override
@@ -108,6 +110,7 @@ public class review extends AppCompatActivity {
                 data.setTitle(temp.get("title").toString());
                 data.setContent(temp.get("content").toString());
                 data.setAuthor(temp.get("author").toString());
+                data.setId(temp.get("id").toString());
                 // data.setResId(temp.get("image");
                 //data.setResId(listResId.get(i));
                 data.setUrlImage(temp.get("image").toString());
@@ -123,4 +126,8 @@ public class review extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
     }
+
+
+
+
 }

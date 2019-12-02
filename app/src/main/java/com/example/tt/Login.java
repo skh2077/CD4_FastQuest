@@ -75,59 +75,6 @@ public class Login extends AppCompatActivity {
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
         //editor.remove("page");
-        editor.apply();
-        final String myid = save.getString("id","");
-        final String mypassword = save.getString("password","");
-         mycheck_pre= save.getBoolean("check_pre",false);
-        if(!myid.equals("") && !mypassword.equals("")) {
-            Response.Listener<String> responseListener = new Response.Listener<String>(){
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-                        try {
-                            username.setText(myid);
-                            password.setText(mypassword);
-                            String success = jsonResponse.get("token").toString();
-                            JSONObject jsonuser = new JSONObject(jsonResponse.get("user").toString());
-                            user.setUser_id(jsonuser.get("id").toString());
-                            user.setUsername(jsonuser.get("username").toString());
-                            user.setEmail(jsonuser.get("email").toString());
-                            user.setNickname(jsonuser.get("nickname").toString());
-                            user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
-                            user.setActivity(Float.parseFloat(jsonuser.get("activity").toString()));
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                            dialog = builder.setMessage("success Login")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                            finish();
-                                        }
-                                    })
-                                    .create();
-                            dialog.show();
-                        } catch (Exception e) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                            dialog = builder.setMessage("이게 실패하면 안되는데")
-                                    .setNegativeButton("OK", null)
-                                    .create();
-                            dialog.show();
-                        }
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-;                }
-            };//Response.Listener 완료
-
-            //Volley 라이브러리를 이용해서 실제 서버와 통신을 구현하는 부분
-            loginRequest login_Request = new loginRequest(myid, mypassword, responseListener);
-            RequestQueue queue = Volley.newRequestQueue(Login.this);
-
-            queue.add(login_Request);
-        }
-        //버튼이 눌리면 RegisterActivity로 가게함
     }
 
     public void login_button(View view) {
@@ -157,14 +104,7 @@ public class Login extends AppCompatActivity {
                                         editor.putString("id", userID);
                                         editor.putString("password", userPassword);
                                         editor.apply();
-                                        if(mycheck_pre == false){
-                                            editor.putBoolean("check_pre", true);
-                                            editor.apply();
-                                            startActivity(new Intent(getApplicationContext(), User_survey.class));
-                                        }
-                                        else {
-                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                        }
+                                        startActivity(new Intent(getApplicationContext(), User_survey.class));
                                         finish();
                                     }
                                 })

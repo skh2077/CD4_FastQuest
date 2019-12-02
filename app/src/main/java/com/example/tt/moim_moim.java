@@ -59,7 +59,7 @@ public class moim_moim extends Fragment {
                 data.setContent(temp.get("content").toString());
                 data.setAuthor(temp.get("author").toString());
                 data.setUrlImage(temp.get("photo").toString());
-                data.setId(Integer.parseInt(temp.get("id").toString()));
+                data.setId(temp.get("id").toString());
 
 
                 adapter.addItem(data);

@@ -139,10 +139,29 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
         public void onLocationChanged(Location location) {
 
             //기존의 현재위치 지우기
+            if(startMarker != null) {
+                startMarker.remove();
+            }
             LatLng mycurloc = new LatLng(location.getLatitude(), location.getLongitude());
             startMarkeroption = new MarkerOptions();
             startMarkeroption.position(mycurloc);
-            startMarkeroption.title("갱신 된 현재 위치 : " + location.getLatitude() + ", " + location.getLongitude());
+            startMarkeroption.title("현재 위치");
+
+            Geocoder geocoder = new Geocoder(map.this);
+            try {
+                list = geocoder.getFromLocation(mycurloc.latitude, mycurloc.longitude, 10);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (list != null) {
+                if (list.size()==0) {
+                    startMarkeroption.snippet("해당되는 주소 정보는 없습니다");
+                } else {
+                    startMarkeroption.snippet(list.get(0).getAddressLine(0));
+
+                }
+            }
+
 
             startMarker = gmap.addMarker(startMarkeroption);
             LatLng camera = new LatLng((startMarker.getPosition().latitude + goalMarker.getPosition().latitude) / 2, (startMarker.getPosition().longitude + goalMarker.getPosition().longitude) / 2);
@@ -153,13 +172,13 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
 
             LatLng goalLocation = goalMarker.getPosition();
 
-            double radius = 500; // 500m distance.
+            double radius = 200; // 500m distance.
 
             double distance = SphericalUtil.computeDistanceBetween(currpos, goalLocation);
 
             if ((distance < radius) && noti == false) {
                 noti = true;
-                Toast.makeText(map.this, "목적지 근처 500m 이내 입니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(map.this, "목적지 근처 200m 이내 입니다.", Toast.LENGTH_LONG).show();
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             } else if ((distance > radius) && noti == true) {
                 Toast.makeText(map.this, "목적지 근처에서 벗어났습니다.", Toast.LENGTH_LONG).show();
@@ -177,7 +196,20 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
 
         MarkerOptions goalmarkeroption = new MarkerOptions();
         goalmarkeroption.title("목적지");
-        goalmarkeroption.snippet("여기까지");
+        Geocoder geocoder = new Geocoder(map.this);
+        try {
+            list = geocoder.getFromLocation(goal_lat, goal_lng, 10);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (list != null) {
+            if (list.size()==0) {
+                goalmarkeroption.snippet("해당되는 주소 정보는 없습니다");
+            } else {
+                goalmarkeroption.snippet(list.get(0).getAddressLine(0));
+
+            }
+        }
         goalmarkeroption.position(goal);
         goalMarker = gmap.addMarker((goalmarkeroption));
         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(goal, (float)15));
@@ -281,7 +313,25 @@ public class map extends AppCompatActivity implements OnMapReadyCallback {
                                 LatLng mycurloc =  new LatLng(location.getLatitude(), location.getLongitude());
                                 startMarkeroption = new MarkerOptions();
                                 startMarker.setPosition(mycurloc);
-                                startMarker.setTitle("현재 위치 : " + location.getLatitude() + ", "  + location.getLongitude());
+
+                                Geocoder geocoder = new Geocoder(map.this);
+                                try {
+                                    list = geocoder.getFromLocation(mycurloc.latitude, mycurloc.longitude, 10);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                if (list != null) {
+                                    if (list.size()==0) {
+                                        startMarkeroption.snippet("해당되는 주소 정보는 없습니다");
+                                    } else {
+                                        startMarkeroption.snippet(list.get(0).getAddressLine(0));
+
+                                    }
+                                }
+
+
+
+                                startMarker.setTitle("현재 위치" );
                                 LatLng camera = new LatLng((startMarker.getPosition().latitude + goalMarker.getPosition().latitude)/2, (startMarker.getPosition().longitude + goalMarker.getPosition().longitude) / 2);
                                 double zoom = 20 - (Math.log(Math.max(Math.abs(startMarker.getPosition().latitude - goalMarker.getPosition().latitude), Math.abs(startMarker.getPosition().longitude - goalMarker.getPosition().longitude)) / 0.00035) / Math.log(2));
                                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(camera, (float)zoom));

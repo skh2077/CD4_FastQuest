@@ -108,8 +108,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nicknameinput"
-        android:layout_width="170dp"
-        android:layout_height="45dp"
+        android:layout_width="216dp"
+        android:layout_height="61dp"
         android:layout_marginStart="85dp"
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -134,8 +134,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ageinput"
-        android:layout_width="170dp"
-        android:layout_height="45dp"
+        android:layout_width="216dp"
+        android:layout_height="61dp"
         android:layout_marginStart="85dp"
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"

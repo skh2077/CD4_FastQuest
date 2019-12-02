@@ -59,9 +59,6 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
     LayoutInflater inflater;
 
     User user;
-
-    boolean[] first_check = new boolean[14];
-    Vector<String> user_precat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,10 +112,6 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
 
         chipGroup = findViewById(R.id.chip_group);
         scat_list_save.add("tmp");
-
-        for(int i =0; i < 14; i++) {
-            first_check[i] = false;
-        }
 
         url = "http://52.79.125.108/api/user/"+ user.getUser_id() +"/precat/";
         try {
@@ -281,7 +274,6 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Toast.makeText(getApplicationContext(), lcat, Toast.LENGTH_SHORT).show();
         inflater = LayoutInflater.from(pre_cat.this);
         for (String text : scat_list) {
             Chip chip = (Chip) inflater.inflate(R.layout.chip_item, null, false);
