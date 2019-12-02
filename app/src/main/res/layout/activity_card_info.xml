@@ -8,6 +8,18 @@
     tools:context=".CardInfo">
 
 
+    <Button
+        android:id="@+id/power_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:text="@string/power_off"
+        app:layout_constraintEnd_toStartOf="@+id/bar_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/bar_text"
         android:layout_width="wrap_content"

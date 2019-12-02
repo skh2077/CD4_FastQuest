@@ -1,6 +1,7 @@
 package com.example.tt;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,6 +36,7 @@ import java.util.List;
 public class card_selected extends AppCompatActivity {
     Button reloadButton;
     Button start;
+    Button act_Power_off;
     TextView act_title;
     TextView act_detail;
     Intent mintent;
@@ -147,6 +149,33 @@ public class card_selected extends AppCompatActivity {
         act_title.setText(play_activity.title);
         act_detail = (TextView)findViewById(R.id.Detail);
         act_detail.setText(play_activity.content);
+
+        act_Power_off = (Button)findViewById(R.id.act_power_off);
+        act_Power_off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(card_selected.this);
+                builder.setMessage("정말로 종료하시겠습니까?");
+                builder.setTitle("종료 알림창")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                ActivityCompat.finishAffinity(card_selected.this);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.setTitle("종료 알림창");
+                alert.show();
+            }
+        });
+
 
         reloadButton = (Button)findViewById(R.id.Reload);
         reloadButton.setOnClickListener(new View.OnClickListener() {

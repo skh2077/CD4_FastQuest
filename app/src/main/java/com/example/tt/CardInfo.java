@@ -1,5 +1,6 @@
 package com.example.tt;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.tt.data.User;
 import com.example.tt.data.category;
@@ -23,7 +25,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class CardInfo extends AppCompatActivity {
-    Button card1, card2, card3, card4, card5;
+    Button card1, card2, card3, card4, card5, Power_off;
     Vector<category> value;
     static int reload_value = 5;
     User user;
@@ -109,6 +111,32 @@ public class CardInfo extends AppCompatActivity {
         }while(value.size() != 5);
 
         setContentView(R.layout.activity_card_info);
+
+        Power_off = (Button)findViewById(R.id.power_off);
+        Power_off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CardInfo.this);
+                builder.setMessage("정말로 종료하시겠습니까?");
+                builder.setTitle("종료 알림창")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                ActivityCompat.finishAffinity(CardInfo.this);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.setTitle("종료 알림창");
+                alert.show();
+            }
+        });
 
         card1 = (Button) findViewById(R.id.card1);
         card_set(value.get(0).cat_name, (int) Math.abs(value.get(0).activity_rate - user.getActivity()), card1);
