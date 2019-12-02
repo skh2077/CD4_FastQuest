@@ -142,8 +142,8 @@ public class BackgroundService extends Service {
             }
 
 
-
-            if(Math.abs(mLastLocation.getLatitude() - latitude) < 0.0005 &&Math.abs(mLastLocation.getLongitude() - longitude) < 0.0005) {
+            //Math.abs(mLastLocation.getLatitude() - latitude) < 0.0005 &&Math.abs(mLastLocation.getLongitude() - longitude) < 0.0005
+            if(true) {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 

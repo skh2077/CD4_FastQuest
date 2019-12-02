@@ -1,6 +1,7 @@
 package com.example.tt;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,6 +36,8 @@ import java.util.List;
 public class card_selected extends AppCompatActivity {
     Button reloadButton;
     Button start;
+    Button act_Power_off;
+    Button act_Give_up;
     TextView act_title;
     TextView act_detail;
     Intent mintent;
@@ -50,6 +53,7 @@ public class card_selected extends AppCompatActivity {
     private BackgroundService mBackgroundService;
 
     int reload_num;
+    float add_score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +69,27 @@ public class card_selected extends AppCompatActivity {
         editor.putInt("page", 2);
         editor.apply();
 
-        float add_score = 0;
+        add_score = 0;
         final String str_act = save.getString("activity","");
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+            return;
+        }
+        mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    correct_cur_loc = new LatLng(location.getLatitude(), location.getLongitude());
+                    user.setUser_location(correct_cur_loc);
+                } else {
+                    Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
+                    LatLng loc_temp = new LatLng(0, 0);
+                    user.setUser_location(loc_temp);
+                }
+            }
+        });
+
 
         if (str_act.equals("")) {
             final Intent intent = getIntent();
@@ -113,23 +136,7 @@ public class card_selected extends AppCompatActivity {
             }
         }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
-            return;
-        }
-        mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    correct_cur_loc = new LatLng(location.getLatitude(), location.getLongitude());
-                    user.setUser_location(correct_cur_loc);
-                } else {
-                    Toast.makeText(getApplicationContext(), "권한 체크 거부 됌", Toast.LENGTH_SHORT).show();
-                    LatLng loc_temp = new LatLng(0, 0);
-                    user.setUser_location(loc_temp);
-                }
-            }
-        });
+
 
         user.setUser_act(play_activity);
 
@@ -147,6 +154,42 @@ public class card_selected extends AppCompatActivity {
         act_title.setText(play_activity.title);
         act_detail = (TextView)findViewById(R.id.Detail);
         act_detail.setText(play_activity.content);
+
+        act_Power_off = (Button)findViewById(R.id.act_power_off);
+        act_Power_off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(card_selected.this);
+                builder.setMessage("정말로 종료하시겠습니까?");
+                builder.setTitle("종료 알림창")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                ActivityCompat.finishAffinity(card_selected.this);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.setTitle("종료 알림창");
+                alert.show();
+            }
+        });
+        act_Give_up = (Button)findViewById(R.id.act_giveup);
+        act_Give_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.remove("reload");
+                editor.remove("page");
+                editor.remove("activity");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
 
         reloadButton = (Button)findViewById(R.id.Reload);
         reloadButton.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +222,10 @@ public class card_selected extends AppCompatActivity {
             public void onClick(View v) {
                 if (finalPlay_activity.outside == 'n') {
                     // 실내 활동이라면
+                    actintent.putExtra("save_score", 0);
                     Toast.makeText(card_selected.this, "실내활동 입니다.", Toast.LENGTH_SHORT).show();
+                    editor.putInt("reload",5);
+                    editor.apply();
                     startActivity(actintent);
                 } else {
                     // 외부 활동이라면
@@ -192,6 +238,9 @@ public class card_selected extends AppCompatActivity {
                                 if(Math.abs(user.getUser_location().latitude - finalPlay_activity.latitude) < 0.0005 &&//약50m
                                         Math.abs(user.getUser_location().longitude - finalPlay_activity.longitude) < 0.0005) {
                                     //외부 활동 완료, 점수 추가!!
+                                    actintent.putExtra("save_score", add_score);
+                                    editor.putInt("reload",5);
+                                    editor.apply();
                                     startActivity(actintent);
                                 } else {
                                     Toast.makeText(card_selected.this, "활동 장소에 도착한 후 눌러주세요", Toast.LENGTH_SHORT).show();

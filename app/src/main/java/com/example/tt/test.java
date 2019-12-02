@@ -110,27 +110,7 @@ public class test extends AppCompatActivity {
         return result;
     }
 
-    void edit_score(String user_id, int score, final Context context) {
-        // 수정하면 유저 id 받으면 통신하는게 완성 됨
-        com.android.volley.Response.Listener<JSONObject> pjresponseListener = new com.android.volley.Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(context, "10점이 적립되었습니다.", Toast.LENGTH_LONG);
-
-            }
-        };
-        JSONObject pointj = new JSONObject();
-        try {
-            pointj.put("score", (int)score);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String URL = "http://52.79.125.108/users/" + user_id;
-        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
-        RequestQueue pjqueue = Volley.newRequestQueue(context);
-        pjqueue.add(preq);
-    }
 
 
 

@@ -63,7 +63,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB_RuFDEAjgz-R4NvYbA13tcvHSKbm999Q" />
+            android:value="AIzaSyAYMsaas3FYMMpkeo2YC2Zug6bsiwFHM1E" />
 
         <meta-data
             android:name="com.google.android.actions"

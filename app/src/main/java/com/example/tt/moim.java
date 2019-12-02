@@ -321,6 +321,8 @@ public class moim extends AppCompatActivity {
                                 jsonObject.put("title", create_moim_tilte.getText());
                                 jsonObject.put("content", create_moim_content.getText());
                                 jsonObject.put("author", user.getUser_id());
+                                //jsonObject.put("author", user.getUsername());
+                                jsonObject.put("category", spinner.getSelectedItem().toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

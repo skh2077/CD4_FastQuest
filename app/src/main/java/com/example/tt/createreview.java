@@ -33,6 +33,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.tt.data.Activity;
 import com.example.tt.data.User;
 import com.example.tt.model.FileINfo;
 import com.example.tt.remote.APIUtils;
@@ -70,6 +71,8 @@ public class createreview extends AppCompatActivity {
     EditText review_title;
     EditText review_content;
 
+    String act_id;
+
     private Uri photoUri;
     private String currentPhotoPath;//실제 사진 파일 경로
     String mImageCaptureName;//이미지 이름
@@ -83,6 +86,7 @@ public class createreview extends AppCompatActivity {
     float point;
     static SharedPreferences save;
     static SharedPreferences.Editor editor;
+    String str_act;
 
     public void add_review(View view) throws JSONException {
 
@@ -100,6 +104,8 @@ public class createreview extends AppCompatActivity {
         }
         Intent idintent = getIntent();
         point = idintent.getFloatExtra("save_score",0);
+        editor.putInt("save_score", (int)point);
+        editor.apply();
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
 
             @Override
@@ -118,6 +124,7 @@ public class createreview extends AppCompatActivity {
                                 Toast.makeText(createreview.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(createreview.this, image_file.getName(), Toast.LENGTH_SHORT).show();
                                 editor.remove("page");
+                                editor.apply();
 
                                 Response.Listener<JSONObject> pjresponseListener = new Response.Listener<JSONObject>() {
 
@@ -156,14 +163,13 @@ public class createreview extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("title", review_title.getText().toString());
         jsonObject.put("content", review_content.getText().toString());
-        String actid = idintent.getExtras().getString("act_id");
         //jsonObject.put("act", Integer.parseInt(actid));
-        jsonObject.put("act", 1);
+        jsonObject.put("act", act_id);
         jsonObject.put("author", Integer.parseInt(user.getUser_id().toString()));
         //jsonObject.put("author", 3);
-        //String nickname = idintent.getExtras().getString("nickname");
-        //jsonObject.put("nickname", nickname);
-        jsonObject.put("nickname", "test_nickname");
+        String nickname = user.getNickname();
+        jsonObject.put("nickname", nickname);
+        //jsonObject.put("nickname", "test_nickname");
         String username = user.getUsername();
         jsonObject.put("username", username);
         //jsonObject.put("username", "test_username");
@@ -190,6 +196,16 @@ public class createreview extends AppCompatActivity {
 
         save = getSharedPreferences("mysave", MODE_PRIVATE);
         editor = save.edit();
+
+        str_act = save.getString("activity","");
+        try {
+            JSONObject tem_j = new JSONObject(str_act);
+            Activity play_activity = new Activity(tem_j);
+            act_id = play_activity.act_id;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         editor.putInt("page", 4);
         editor.apply();
 
@@ -197,6 +213,8 @@ public class createreview extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.remove("page");
+                editor.apply();
                 Toast.makeText(createreview.this, String.valueOf(point) + "점이 적립되었습니다.", Toast.LENGTH_LONG);
                 finish();
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));

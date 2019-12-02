@@ -16,12 +16,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.example.tt.data.User;
 import com.example.tt.model.Data;
+import com.google.gson.JsonObject;
 import com.like.IconType;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
@@ -30,6 +39,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     private Context context;
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private int prePosition = -1;
+    User user = User.getInstance();
+    String writen_id;
 
     @NonNull
     @Override
@@ -84,6 +95,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
             textView1.setText(data.getTitle());
             textView2.setText(data.getAuthor());
+            writen_id = data.getAuthor();
             textView3.setText(data.getContent());
             imageView1.setImageResource(data.getResId());
             //imageView2.setImageResource(data.getResId());
@@ -101,15 +113,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             textView2.setOnClickListener(this);
             imageView1.setOnClickListener(this);
 
+
             likebutton.setOnLikeListener(new OnLikeListener() {
                 @Override
                 public void liked(LikeButton likeButton) {
                     //생김+1
+                    edit_score(writen_id, 1);
                 }
 
                 @Override
                 public void unLiked(LikeButton likeButton) {
                         //사라짐 -1
+                    edit_score(writen_id,-1);
                 }
             });
         }
@@ -168,5 +183,46 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
             va.start();
         }
+    }
+
+    public void edit_score(String user_id, int score) {
+        // 수정하면 유저 id 받으면 통신하는게 완성 됨
+        int temp_score = 0;
+        com.android.volley.Response.Listener<JSONObject> pjresponseListener = new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if(user.getUser_id() == writen_id) {
+                        user.setScore(Integer.parseInt(response.get("score").toString()));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        String URL = "http://52.79.125.108/api/detail/" + user_id;
+        //String URL = "http://52.79.125.108/api/user/" +  user_name;
+        url_json read = new url_json();
+        JSONObject jtemp_score = null;
+        try {
+            jtemp_score = read.readJsonFromUrl(URL);
+            JSONObject temp = new JSONObject(jtemp_score.get("temp").toString());
+            temp_score = Integer.parseInt(temp.get("score").toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject pointj = new JSONObject();
+        try {
+            pointj.put("score", temp_score +score);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+        RequestQueue pjqueue = Volley.newRequestQueue(context);
+        pjqueue.add(preq);
     }
 }

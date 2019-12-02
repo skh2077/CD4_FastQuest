@@ -57,7 +57,7 @@ public class moim_moim extends Fragment {
                 Data data = new Data();
                 data.setTitle(temp.get("title").toString());
                 data.setContent(temp.get("content").toString());
-                data.setAuthor("작성자 : " + temp.get("author").toString());
+                data.setAuthor(temp.get("author").toString());
                 data.setUrlImage(temp.get("photo").toString());
                 data.setId(Integer.parseInt(temp.get("id").toString()));
 

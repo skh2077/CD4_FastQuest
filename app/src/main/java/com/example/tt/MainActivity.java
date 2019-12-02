@@ -30,6 +30,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     ImageButton StartButton;
@@ -68,7 +73,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         editor.remove("activity");
         editor.remove("page");
+        editor.remove("reload");
         editor.apply();
+
+        user = User.getInstance();
+
+        JSONObject user_info;
+        url_json read = new url_json();
+        String user_info_url = "http://52.79.125.108/api/user/" + user.getUsername();
+        try {
+            user_info = read.readJsonFromUrl(user_info_url);
+            JSONObject temp = new JSONObject(user_info.get("temp").toString());
+            user.setNickname(temp.get("nickname").toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         mfusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         mfusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -82,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-        user = User.getInstance();
+
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view_drawer);
@@ -93,8 +115,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nick_and_username = nav_header_view.findViewById(R.id.userId);
         nick_and_username.setText(user.getNickname() + "(" + user.getUsername() + ")");
         small_view_score = nav_header_view.findViewById(R.id.small_score);
-        //small_view_score.setText(user.getScore());
-        small_view_score.setText("10");
+        small_view_score.setText(String.valueOf(user.getScore()));
+        //small_view_score.setText("10");
 
         moim_switch = findViewById(R.id.switch_moim);
         inside_switch = findViewById(R.id.switch_inside);
@@ -137,7 +159,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(getApplicationContext(), "GO!", Toast.LENGTH_SHORT).show();
                 user.setIsmoim(moim_switch.isChecked());
                 user.setIsinside(inside_switch.isChecked());
-                startActivity(new Intent(getApplicationContext(), CardInfo.class));
+                int page_num = save.getInt("page", 0);
+                switch (page_num) {
+                    case 0:
+                        startActivity(new Intent(getApplicationContext(), CardInfo.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(getApplicationContext(), CardInfo.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(getApplicationContext(), card_selected.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(getApplicationContext(), moim_card_selected.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(getApplicationContext(), createreview.class));
+                        break;
+
+                }
             }
         });
 
