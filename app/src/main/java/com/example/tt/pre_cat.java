@@ -130,7 +130,6 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
                 //DELETE and For-loop PUT
                 save_chip();
 
-                UserData userdata = new UserData(); // <= 먼 필요야?
 
                 for (int i = 1; i < scat_list_save.size(); i++) {
                     Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>(){
@@ -161,10 +160,9 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
                 }
 
                 // startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                userdata.setBoolList(BoolList);
 
                 Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
-               // startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
 
             }

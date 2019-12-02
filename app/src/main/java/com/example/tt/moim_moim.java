@@ -49,6 +49,8 @@ public class moim_moim extends Fragment {
         recycleView.setAdapter(adapter);
 
         final String url = "http://52.79.125.108/api/assemble";
+        final String userUrl = "http://52.79.125.108/users/";
+        JSONObject temparr = null;
         try {
             cat_json = read.readJsonFromUrl(url);
             cat_arr = new JSONArray(cat_json.get("temp").toString());
@@ -57,12 +59,14 @@ public class moim_moim extends Fragment {
                 Data data = new Data();
                 data.setTitle(temp.get("title").toString());
                 data.setContent(temp.get("content").toString());
-                data.setAuthor(temp.get("author").toString());
                 data.setUrlImage(temp.get("photo").toString());
-                data.setId(Integer.parseInt(temp.get("id").toString()));
 
-
+                JSONObject tempobject = read.readJsonFromUrl(userUrl + temp.get("author").toString());
+                temparr = new JSONObject(tempobject.get("temp").toString());
+                data.setAuthor(temparr.get("nickname").toString());
                 adapter.addItem(data);
+                //data.setId(Integer.parseInt(temp.get("id").toString()));
+
             }
         } catch (IOException e) {
             e.printStackTrace();

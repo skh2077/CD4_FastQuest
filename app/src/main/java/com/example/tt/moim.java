@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,6 +83,7 @@ public class moim extends AppCompatActivity {
     ImageButton backButton;
     ImageButton moimcreateButton;
     Spinner spinner;
+    Spinner spinner2;
     private int num;
     private JSONObject cat_json = null;
     private JSONArray cat_arr = null;
@@ -93,6 +95,10 @@ public class moim extends AppCompatActivity {
     TextView create_moim_tilte;
     TextView create_moim_content;
     ImageView create_moim_photo;
+
+    TextView create_challenge_activity;
+    TextView create_challenge_content;
+
     User user;
 
     String upload_moim_id;
@@ -165,6 +171,7 @@ public class moim extends AppCompatActivity {
                         break;
                 }
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
@@ -206,19 +213,19 @@ public class moim extends AppCompatActivity {
                     try {
                         cat_json = read.readJsonFromUrl(url);
                         cat_arr = new JSONArray(cat_json.get("temp").toString());
-                        for(int i = 0;i<cat_arr.length();i++){
+                        for (int i = 0; i < cat_arr.length(); i++) {
                             JSONObject temp = (JSONObject) cat_arr.get(i);
                             spinnerArray.add(temp.get("cat_name").toString());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }catch (IOException e){
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    spinner =popupView.findViewById(R.id.spinner);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(moim.this,android.R.layout
-                            .simple_spinner_dropdown_item,spinnerArray);
+                    spinner = popupView.findViewById(R.id.spinner);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(moim.this, android.R.layout
+                            .simple_spinner_dropdown_item, spinnerArray);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);
 
@@ -278,7 +285,7 @@ public class moim extends AppCompatActivity {
                                 new AlertDialog.Builder(moim.this).setTitle("내용을 입력해주세요").setPositiveButton("OK", null).show();
                                 return;
                             }
-                            if(image_file == null) {
+                            if (image_file == null) {
                                 new AlertDialog.Builder(moim.this).setTitle("사진을 입력해주세요").setPositiveButton("OK", null).show();
                                 //return;
                             }
@@ -330,8 +337,8 @@ public class moim extends AppCompatActivity {
                             moimRequest mRequest = new moimRequest(Request.Method.POST, create_moim_url, jsonObject, listener, null);
                             RequestQueue moim_request = Volley.newRequestQueue(moim.this);
                             moim_request.add(mRequest);
-
-                            //Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
+                            mPopupWindow.dismiss();
+                            Toast.makeText(getApplicationContext(), "등록 완료", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -341,22 +348,81 @@ public class moim extends AppCompatActivity {
                     mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     mPopupWindow.setFocusable(true);
                     mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+                    create_challenge_activity = popupView.findViewById(R.id.title);
+                    create_challenge_content = popupView.findViewById(R.id.content);
 
-                    Button cancel = popupView.findViewById(R.id.Cancel);
+                    final Button cancel = popupView.findViewById(R.id.Cancel);
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mPopupWindow.dismiss();
                         }
                     });
+
+                    List<String> spinnerArray = new ArrayList<>();
+                    spinnerArray.add("공예/만들기");
+                    spinnerArray.add("인문학/책/글");
+                    spinnerArray.add("사진/영상");
+                    spinnerArray.add("댄스/무용");
+                    spinnerArray.add("요리/제조");
+                    spinnerArray.add("게임/오락");
+                    spinnerArray.add("외국/언어");
+                    spinnerArray.add("사교/인맥");
+                    spinnerArray.add("문화/공연/축제");
+                    spinnerArray.add("음악/악기");
+                    spinnerArray.add("운동/스포츠");
+                    spinnerArray.add("여행/아웃도어");
+                    spinnerArray.add("봉사활동");
+
+                    spinner2 = popupView.findViewById(R.id.spinner);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(moim.this, android.R.layout
+                            .simple_spinner_dropdown_item, spinnerArray);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner2.setAdapter(adapter);
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mPopupWindow.dismiss();
+
+                        }
+                    });
                     Button ok = popupView.findViewById(R.id.Ok);
+
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
+
+                            if (create_challenge_activity.getText().toString().equals("")) {
+                                new AlertDialog.Builder(moim.this).setTitle("카테고리를 입력해주세요").setPositiveButton("OK", null).show();
+                                return;
+                            }
+                            if (create_challenge_content.getText().toString().equals("")) {
+                                new AlertDialog.Builder(moim.this).setTitle("내용을 입력해주세요").setPositiveButton("OK", null).show();
+                                return;
+                            }
+
+                            String create_challenge_url = "http://52.79.125.108/api/challenge/";
+                            JSONObject jsonObject = new JSONObject();
+                            user = User.getInstance();
+                            try {
+                                jsonObject.put("act_name", create_challenge_activity.getText());
+                                jsonObject.put("content", create_challenge_content.getText());
+                                //jsonObject.put("author", user.getUsername());
+                                jsonObject.put("cat_name", spinner2.getSelectedItem().toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            ChallengeRequest mRequest2 = new ChallengeRequest(Request.Method.POST, create_challenge_url, jsonObject, null, null);
+                            RequestQueue challenge_request = Volley.newRequestQueue(moim.this);
+                            challenge_request.add(mRequest2);
+                            mPopupWindow.dismiss();
+
+                            Toast.makeText(getApplicationContext(), "등록 완료", Toast.LENGTH_SHORT).show();
+
                         }
                     });
-                    Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
                 }
             }
         });

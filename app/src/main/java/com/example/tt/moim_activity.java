@@ -46,7 +46,7 @@ public class moim_activity extends Fragment {
         recycleView.setAdapter(adapter);
 
 
-        Data data = new Data();
+     /*   Data data = new Data();
         data.setTitle("          피겨스케이팅 -    운동/아웃도어");
         data.setAuthor("추천수 :" + 17);
         // data.setUrlImage(temp.get("photo").toString());
@@ -54,6 +54,29 @@ public class moim_activity extends Fragment {
 
         adapter.addItem(data);
 
+        adapter.notifyDataSetChanged();*/
+
+
+        final String url = "http://52.79.125.108/api/challenge/";
+
+        try {
+            cat_json = read.readJsonFromUrl(url);
+            cat_arr = new JSONArray(cat_json.get("temp").toString());
+            for (int i = 0; i < cat_arr.length(); i++) {
+                JSONObject temp = (JSONObject) cat_arr.get(i);
+                Data data = new Data();
+                data.setTitle(temp.get("cat_name").toString());
+                data.setAuthor(temp.get("act_name").toString());
+                data.setContent(temp.get("content").toString());
+                adapter.addItem(data);
+                //data.setId(Integer.parseInt(temp.get("id").toString()));
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         adapter.notifyDataSetChanged();
 
 
