@@ -17,7 +17,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.tt.data.Activity;
 import com.example.tt.data.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -36,8 +39,6 @@ import java.util.List;
 public class card_selected extends AppCompatActivity {
     Button reloadButton;
     Button start;
-    Button act_Power_off;
-    Button act_Give_up;
     TextView act_title;
     TextView act_detail;
     Intent mintent;
@@ -155,41 +156,7 @@ public class card_selected extends AppCompatActivity {
         act_detail = (TextView)findViewById(R.id.Detail);
         act_detail.setText(play_activity.content);
 
-        act_Power_off = (Button)findViewById(R.id.act_power_off);
-        act_Power_off.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(card_selected.this);
-                builder.setMessage("정말로 종료하시겠습니까?");
-                builder.setTitle("종료 알림창")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                ActivityCompat.finishAffinity(card_selected.this);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.setTitle("종료 알림창");
-                alert.show();
-            }
-        });
-        act_Give_up = (Button)findViewById(R.id.act_giveup);
-        act_Give_up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.remove("reload");
-                editor.remove("page");
-                editor.remove("activity");
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });
+
 
         reloadButton = (Button)findViewById(R.id.Reload);
         reloadButton.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +170,24 @@ public class card_selected extends AppCompatActivity {
                     editor.apply();
                     startActivity(reintent);
                 }else{
-                    new AlertDialog.Builder(card_selected.this).setTitle("Reload 횟수가 끝났습니다.").setPositiveButton("OK", null).show();
+                    new AlertDialog.Builder(card_selected.this).setTitle("Reload 횟수가 끝났습니다.\n 포기하겠습니까?") .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            editor.remove("reload");
+                            editor.remove("page");
+                            editor.remove("activity");
+                            //스코어 하락 시킬 것
+                            edit_score(user.getUser_id(),  -5);
+
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.cancel();
+                        }
+                    }).create().show();
                 }
             }
         });
@@ -320,8 +304,51 @@ public class card_selected extends AppCompatActivity {
                 }
         }
     }
+    private BackPressHandler backPressHandler = new BackPressHandler(this);
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        backPressHandler.onBackPressed();
     }
+
+    public void edit_score(String user_id, int score) {
+        // 수정하면 유저 id 받으면 통신하는게 완성 됨
+        int temp_score = 0;
+        com.android.volley.Response.Listener<JSONObject> pjresponseListener = new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    user.setScore(Integer.parseInt(response.get("score").toString()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        String URL = "http://52.79.125.108/api/detail/" + user_id;
+        //String URL = "http://52.79.125.108/api/user/" +  user_name;
+        url_json read = new url_json();
+        JSONObject jtemp_score = null;
+        try {
+            jtemp_score = read.readJsonFromUrl(URL);
+            JSONObject temp = new JSONObject(jtemp_score.get("temp").toString());
+            temp_score = Integer.parseInt(temp.get("score").toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject pointj = new JSONObject();
+        try {
+            pointj.put("score", temp_score +score);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+        RequestQueue pjqueue = Volley.newRequestQueue(this);
+        pjqueue.add(preq);
+    }
+
 }
