@@ -148,13 +148,13 @@ public class MoimAdapter extends RecyclerView.Adapter<MoimAdapter.ItemViewHolder
             switch (v.getId()) {
 
                 case R.id.textView1:
-                    Toast.makeText(context, data.getTitle(), Toast.LENGTH_SHORT).show();
+
                     break;
                 case R.id.textView2:
-                    Toast.makeText(context, data.getAuthor(), Toast.LENGTH_SHORT).show();
+
                     break;
                 case R.id.imageView1:
-                    Toast.makeText(context, data.getUrlImage() + " 이미지 입니다.", Toast.LENGTH_SHORT).show();
+
                     break;
             }
         }
