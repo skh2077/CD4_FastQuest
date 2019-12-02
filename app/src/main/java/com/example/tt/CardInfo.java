@@ -14,6 +14,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.tt.data.User;
 import com.example.tt.data.category;
 
@@ -25,7 +28,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class CardInfo extends AppCompatActivity {
-    Button card1, card2, card3, card4, card5, Power_off, Give_up;
+    Button card1, card2, card3, card4, card5;
     Vector<category> value;
     static int reload_value = 5;
     User user;
@@ -40,11 +43,12 @@ public class CardInfo extends AppCompatActivity {
         editor = save.edit();
         editor.putInt("page", 1);
 
-        reload_value = save.getInt("reload",5);
-
         final url_json read = new url_json();
         Intent get_intent = getIntent();
         try{
+            if(reload_value > save.getInt("reload",5)) {
+                reload_value = save.getInt("reload",5);
+            }
             if(reload_value > get_intent.getExtras().getInt("reload")){
                 reload_value = get_intent.getExtras().getInt("reload");
             }
@@ -111,43 +115,6 @@ public class CardInfo extends AppCompatActivity {
         }while(value.size() != 5);
 
         setContentView(R.layout.activity_card_info);
-
-        Power_off = (Button)findViewById(R.id.power_off);
-        Power_off.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CardInfo.this);
-                builder.setMessage("정말로 종료하시겠습니까?");
-                builder.setTitle("종료 알림창")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                ActivityCompat.finishAffinity(CardInfo.this);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.setTitle("종료 알림창");
-                alert.show();
-            }
-        });
-
-        Give_up = (Button)findViewById(R.id.give_up);
-        Give_up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor.remove("reload");
-                editor.remove("page");
-                editor.remove("activity");
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });
 
         card1 = (Button) findViewById(R.id.card1);
         card_set(value.get(0).cat_name, (int) Math.abs(value.get(0).activity_rate - user.getActivity()), card1);
@@ -240,11 +207,30 @@ public class CardInfo extends AppCompatActivity {
     public void reload(View view) {
 
         if (reload_value > 0) {
-            finish();
             reload_value = reload_value - 1;
+            editor.putInt("reload", reload_value);
+            editor.apply();
             startActivity(new Intent(getApplicationContext(), CardInfo.class));
+            finish();
         } else {
-            new AlertDialog.Builder(this).setTitle("Reload 횟수가 끝났습니다.").setPositiveButton("OK", null).show();
+            new AlertDialog.Builder(this).setTitle("Reload 횟수가 끝났습니다.\n 포기하겠습니까?") .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    editor.remove("reload");
+                    editor.remove("page");
+                    editor.remove("activity");
+                    //스코어 하락 시킬 것
+                    edit_score(user.getUser_id(),  -5);
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.cancel();
+                }
+            }).create().show();
             return;
         }
     }
@@ -274,9 +260,50 @@ public class CardInfo extends AppCompatActivity {
                 break;
         }
     }
+
+    private BackPressHandler backPressHandler = new BackPressHandler(this);
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
+        backPressHandler.onBackPressed();
     }
+    public void edit_score(String user_id, int score) {
+        // 수정하면 유저 id 받으면 통신하는게 완성 됨
+        int temp_score = 0;
+        com.android.volley.Response.Listener<JSONObject> pjresponseListener = new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    user.setScore(Integer.parseInt(response.get("score").toString()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        String URL = "http://52.79.125.108/api/detail/" + user_id;
+        //String URL = "http://52.79.125.108/api/user/" +  user_name;
+        url_json read = new url_json();
+        JSONObject jtemp_score = null;
+        try {
+            jtemp_score = read.readJsonFromUrl(URL);
+            JSONObject temp = new JSONObject(jtemp_score.get("temp").toString());
+            temp_score = Integer.parseInt(temp.get("score").toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        JSONObject pointj = new JSONObject();
+        try {
+            pointj.put("score", temp_score +score);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        addpointRequest preq = new addpointRequest(Request.Method.PUT, pointj, URL, pjresponseListener, null);
+        RequestQueue pjqueue = Volley.newRequestQueue(this);
+        pjqueue.add(preq);
+    }
 }

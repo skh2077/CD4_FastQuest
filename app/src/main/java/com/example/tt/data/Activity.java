@@ -47,7 +47,7 @@ public class Activity {
     public Activity(JSONObject jsonActivity) throws JSONException {
         this.act_id = jsonActivity.get("act_id").toString();
         this.title = jsonActivity.get("title").toString();
-        this.category = jsonActivity.get("category").toString();
+        this.category = jsonActivity.get("cat_name").toString();
         this.content = jsonActivity.get("content").toString();
         this.longterm = jsonActivity.get("longterm").toString().charAt(0);
         this.outside = jsonActivity.get("outside").toString().charAt(0);
