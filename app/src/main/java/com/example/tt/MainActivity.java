@@ -144,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         editor.remove("password");
                         editor.remove("check_pre");
                         editor.remove("page");
+                        editor.remove("activity");
+                        editor.remove("reload");
                         editor.apply();
                         Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_LONG);
                         startActivity(new Intent(getApplicationContext(), start.class));
@@ -221,6 +223,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_logout:
                 editor.remove("id");
                 editor.remove("password");
+                editor.remove("check_pre");
+                editor.remove("page");
+                editor.remove("activity");
+                editor.remove("reload");
                 editor.apply();
                 Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getApplicationContext(), start.class));

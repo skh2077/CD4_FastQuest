@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class pre_cat extends AppCompatActivity implements View.OnClickListener {
@@ -59,6 +60,8 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
 
     User user;
 
+    boolean[] first_check = new boolean[14];
+    Vector<String> user_precat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +116,26 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
         chipGroup = findViewById(R.id.chip_group);
         scat_list_save.add("tmp");
 
+        for(int i =0; i < 14; i++) {
+            first_check[i] = false;
+        }
+
+        url = "http://52.79.125.108/api/user/"+ user.getUser_id() +"/precat/";
+        try {
+            cat_json = read.readJsonFromUrl(url);
+            cat_arr = new JSONArray(cat_json.get("temp").toString());
+            for (int i = 0; i < cat_arr.length(); i++) {
+                JSONObject temp = (JSONObject) cat_arr.get(i);
+                if(!scat_list_save.contains(temp.get("cat_name")))
+                {
+                    scat_list_save.add(temp.get("cat_name").toString());
+                }
+            }
+        }
+        catch (Exception e) {
+
+        }
+
     }
     public void OnClickHandler(View view)
     {
@@ -162,7 +185,9 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
                 // startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
                 Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+                finish();
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
+
 
 
             }
@@ -280,5 +305,4 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
         chipGroup.removeAllViews();
         scat_list.clear();
     }
-
 }

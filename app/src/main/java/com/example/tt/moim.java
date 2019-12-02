@@ -94,6 +94,7 @@ public class moim extends AppCompatActivity {
 
     TextView create_moim_tilte;
     TextView create_moim_content;
+    TextView create_moim_date;
     ImageView create_moim_photo;
 
     TextView create_challenge_activity;
@@ -204,6 +205,7 @@ public class moim extends AppCompatActivity {
                     mPopupWindow.setFocusable(true);
                     mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
                     create_moim_tilte = popupView.findViewById(R.id.creat_moim_title);
+                    create_moim_date = popupView.findViewById(R.id.date);
                     create_moim_content = popupView.findViewById(R.id.creat_moim_content);
                     create_moim_photo = popupView.findViewById(R.id.creat_moim_photo);
                     final Button add_photo = popupView.findViewById(R.id.add_photo);
@@ -327,6 +329,7 @@ public class moim extends AppCompatActivity {
                             try {
                                 jsonObject.put("title", create_moim_tilte.getText());
                                 jsonObject.put("content", create_moim_content.getText());
+                                jsonObject.put("time", create_moim_date.getText());
                                 jsonObject.put("author", user.getUser_id());
                                 //jsonObject.put("author", user.getUsername());
                                 jsonObject.put("category", spinner.getSelectedItem().toString());

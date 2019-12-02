@@ -176,6 +176,7 @@ public class card_selected extends AppCompatActivity {
                             editor.remove("reload");
                             editor.remove("page");
                             editor.remove("activity");
+                            editor.apply();
                             //스코어 하락 시킬 것
                             edit_score(user.getUser_id(),  -5);
 
