@@ -145,6 +145,7 @@ public class CardInfo extends AppCompatActivity {
                 editor.remove("reload");
                 editor.remove("page");
                 editor.remove("activity");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
 

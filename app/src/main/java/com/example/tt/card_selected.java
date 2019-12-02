@@ -187,6 +187,7 @@ public class card_selected extends AppCompatActivity {
                 editor.remove("reload");
                 editor.remove("page");
                 editor.remove("activity");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
 
