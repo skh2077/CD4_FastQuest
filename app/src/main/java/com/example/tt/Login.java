@@ -19,7 +19,8 @@ import com.example.tt.data.User;
 import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
-
+    //android:value="AIzaSyB_RuFDEAjgz-R4NvYbA13tcvHSKbm999Q" /> debug key
+    //android:value="AIzaSyAYMsaas3FYMMpkeo2YC2Zug6bsiwFHM1E" />release key
     Button login;
     EditText username;
     EditText password;
@@ -62,7 +63,7 @@ public class Login extends AppCompatActivity {
                             user.setUsername(jsonuser.get("username").toString());
                             user.setEmail(jsonuser.get("email").toString());
                             user.setNickname(jsonuser.get("nickname").toString());
-                            //user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
+                            user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
                             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                             dialog = builder.setMessage("success Login")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -133,6 +134,7 @@ public class Login extends AppCompatActivity {
                         user.setEmail(jsonuser.get("email").toString());
                         user.setNickname(jsonuser.get("nickname").toString());
                         //user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
+                        user.setScore(Integer.parseInt(jsonuser.get("score").toString()));
                         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
                         dialog = builder.setMessage("success Login")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {

@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nick_and_username = nav_header_view.findViewById(R.id.userId);
         nick_and_username.setText(user.getNickname() + "(" + user.getUsername() + ")");
         small_view_score = nav_header_view.findViewById(R.id.small_score);
-        //small_view_score.setText(user.getScore());
-        small_view_score.setText("10");
+        small_view_score.setText(String.valueOf(user.getScore()));
+        //small_view_score.setText("10");
 
         moim_switch = findViewById(R.id.switch_moim);
         inside_switch = findViewById(R.id.switch_inside);
