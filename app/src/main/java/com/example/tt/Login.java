@@ -158,9 +158,11 @@ public class Login extends AppCompatActivity {
                                         if(mycheck_pre == false){
                                             editor.putBoolean("check_pre", true);
                                             editor.apply();
-                                            startActivity(new Intent(getApplicationContext(), pre_cat.class));
+                                            startActivity(new Intent(getApplicationContext(), User_survey.class));
                                         }
-                                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                        else {
+                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                        }
                                         finish();
                                     }
                                 })

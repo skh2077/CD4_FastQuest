@@ -164,6 +164,8 @@ public class pre_cat extends AppCompatActivity implements View.OnClickListener {
                 userdata.setBoolList(BoolList);
 
                 Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
                // startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
 
