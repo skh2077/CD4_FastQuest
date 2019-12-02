@@ -2,6 +2,9 @@ package com.example.tt.model;
 
 import android.graphics.Bitmap;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Data {
 
     private String title;
@@ -13,6 +16,7 @@ public class Data {
     }
 
     public void setDate(String date) {
+
         this.date = date;
     }
 
