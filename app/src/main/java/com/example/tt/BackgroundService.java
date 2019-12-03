@@ -57,38 +57,7 @@ public class BackgroundService extends Service {
         }
 
         Log.e(TAG, "onCreate");
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(BackgroundService.this, "1001")
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_foreground)) //BitMap 이미지 요구
-                .setContentTitle("알림")
-                .setContentText("시작")
-                // 더 많은 내용이라서 일부만 보여줘야 하는 경우 아래 주석을 제거하면 setContentText에 있는 문자열 대신 아래 문자열을 보여줌
-                //.setStyle(new NotificationCompat.BigTextStyle().bigText("위치에 도착했습니다!!"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-
-        //OREO API 26 이상에서는 채널 필요
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            builder.setSmallIcon(R.drawable.ic_launcher_foreground); //mipmap 사용시 Oreo 이상에서 시스템 UI 에러남
-            CharSequence channelName = "노티페케이션 채널";
-            String description = "오레오 이상을 위한 것임";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-
-            NotificationChannel channel = new NotificationChannel("1001", channelName, importance);
-            channel.setDescription(description);
-
-            // 노티피케이션 채널을 시스템에 등록
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(channel);
-
-        } else
-            builder.setSmallIcon(R.mipmap.ic_launcher); // Oreo 이하에서 mipmap 사용하지 않으면 Couldn't create icon: StatusBarIcon 에러남
-
-        assert notificationManager != null;
-        notificationManager.notify(123, builder.build()); // 고유숫자로 노티피케이션 동작시킴
         initializeLocationManager();
         try {
             mLocationManager.requestLocationUpdates(
@@ -129,7 +98,7 @@ public class BackgroundService extends Service {
 
             LatLng goalLocation = new LatLng(latitude,longitude);
 
-            double radius = 500; // 500m distance.
+            double radius = 50; // 500m distance.
 
             double distance = SphericalUtil.computeDistanceBetween(currpos, goalLocation);
 
@@ -290,38 +259,6 @@ public class BackgroundService extends Service {
     public void onDestroy()
     {
         Log.e(TAG, "onDestroy");
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(BackgroundService.this, "1001")
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_foreground)) //BitMap 이미지 요구
-                .setContentTitle("알림")
-                .setContentText("끝났어요")
-                // 더 많은 내용이라서 일부만 보여줘야 하는 경우 아래 주석을 제거하면 setContentText에 있는 문자열 대신 아래 문자열을 보여줌
-                //.setStyle(new NotificationCompat.BigTextStyle().bigText("위치에 도착했습니다!!"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-
-        //OREO API 26 이상에서는 채널 필요
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            builder.setSmallIcon(R.drawable.ic_launcher_foreground); //mipmap 사용시 Oreo 이상에서 시스템 UI 에러남
-            CharSequence channelName = "노티페케이션 채널";
-            String description = "오레오 이상을 위한 것임";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-
-            NotificationChannel channel = new NotificationChannel("1001", channelName, importance);
-            channel.setDescription(description);
-
-            // 노티피케이션 채널을 시스템에 등록
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(channel);
-
-        } else
-            builder.setSmallIcon(R.mipmap.ic_launcher); // Oreo 이하에서 mipmap 사용하지 않으면 Couldn't create icon: StatusBarIcon 에러남
-
-        assert notificationManager != null;
-        notificationManager.notify(14, builder.build()); // 고유숫자로 노티피케이션 동작시킴
         Intent broadcastIntent = new Intent("com.bluexmas.common.RestartService");
         sendBroadcast(broadcastIntent);
         //Toast.makeText(BackgroundService.this, "끝남", Toast.LENGTH_LONG).show();
