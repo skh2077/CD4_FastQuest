@@ -20,6 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class moim_moim extends Fragment {
 
@@ -60,6 +63,14 @@ public class moim_moim extends Fragment {
                 data.setTitle(temp.get("title").toString());
                 data.setContent(temp.get("content").toString());
                 data.setUrlImage(temp.get("photo").toString());
+
+                String[] temp_array = temp.get("time").toString().split("T");
+                String moim_act_time_str = temp_array[0] + "-" + temp_array[1];
+                Date moim_act_time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(moim_act_time_str);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy년MM월dd일HH시mm분");
+                String print =  format.format(moim_act_time);
+
+                data.setDate(print);
                 data.setId(temp.get("id").toString());
                 JSONObject tempobject = read.readJsonFromUrl(userUrl + temp.get("author").toString());
                 temparr = new JSONObject(tempobject.get("temp").toString());
@@ -71,6 +82,8 @@ public class moim_moim extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (ParseException e){
             e.printStackTrace();
         }
         adapter.notifyDataSetChanged();

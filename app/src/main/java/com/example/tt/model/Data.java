@@ -2,11 +2,25 @@ package com.example.tt.model;
 
 import android.graphics.Bitmap;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Data {
 
     private String title;
     private String content;
     private String author;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+
+        this.date = date;
+    }
+
+    private String date;
     private int resId;
     private Bitmap image;
     private String urlImage;
