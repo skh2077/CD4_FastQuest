@@ -98,21 +98,10 @@ public class BackgroundService extends Service {
 
             LatLng goalLocation = new LatLng(latitude,longitude);
 
-            double radius = 50; // 500m distance.
-
-            double distance = SphericalUtil.computeDistanceBetween(currpos, goalLocation);
-
-            if ((distance < radius) && noti == false) {
-                noti = true;
-                Toast.makeText(BackgroundService.this,  "목적지 까지" + (int) distance + "m 남음", Toast.LENGTH_LONG).show();
-            }
-            else if(noti == true && (distance > radius)) {
-                noti = false;
-            }
 
 
-            //Math.abs(mLastLocation.getLatitude() - latitude) < 0.0005 &&Math.abs(mLastLocation.getLongitude() - longitude) < 0.0005
-            if(true) {
+
+            if(Math.abs(mLastLocation.getLatitude() - latitude) < 0.0005 &&Math.abs(mLastLocation.getLongitude() - longitude) < 0.0005) {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 

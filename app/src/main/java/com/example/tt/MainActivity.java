@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             user_info = read.readJsonFromUrl(user_info_url);
             JSONObject temp = new JSONObject(user_info.get("temp").toString());
             user.setNickname(temp.get("nickname").toString());
+            user.setActivity(Float.parseFloat(temp.get("activity").toString()));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

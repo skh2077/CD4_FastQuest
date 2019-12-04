@@ -1,6 +1,7 @@
 package com.example.tt;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -26,6 +27,7 @@ public class BackPressHandler {
      * Default onBackPressed()
      * 2 seconds
      */
+
     public void onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
             backKeyPressedTime = System.currentTimeMillis();
@@ -36,6 +38,7 @@ public class BackPressHandler {
             ActivityCompat.finishAffinity(activity);
             toast.cancel();
         }
+
     }
 
     /**
