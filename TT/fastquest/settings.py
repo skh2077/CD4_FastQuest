@@ -1,44 +1,3 @@
-# CD4_FASTQUEST(TT)
-
-## Capstone Design
-
-### AWS S3 Buckets
-Amazon's "Simple Storage Service" (S3), offers a secure, reliable and scalable storage system which is perfect for this use. 
-It is simple to set up and can be used regardless of where your Django site is being hosted.
-
-#### Setting up an S3 bucket and allowing the Django app access
-
-You can create an S3 bucket easily by logging into your AWS account, going to the S3 section of the AWS console, 
-clicking "Create bucket" and following the steps to set up.
-You will also need to create a user with Programmatic access to your AWS account in the "IAM" console and give it 
-permissions for S3FullAccess for your app to be able to correctly access your bucket. 
-AWS provide this useful [walkthrough](https://docs.aws.amazon.com/AmazonS3/latest/dev/walkthrough1.html#walkthrough1-add-users) to help set this up
-
-### Django & DRF Version and the other dependencies
-You can install all dependencies by 'pip install -r requirements.txt' in TT/ directory.
-```
-(Django 2.2.6)
-
-pip install django==2.2.6
-pip install djangorestframework==3.10.3
-...
-```
-
-### mysql Version
-
-```
-(mysql version 5.7.26-log) - AWS RDS mysql default setting
-```
-
-### settings.py Location
-
-```
-TT/fastquest/settings.py
-```
-### settings.py 
-You should edit this file in the location listed above.
-The annotated section needs to be modified to use the database and image save features.
-```
 """
 Django settings for fastquest project.
 
@@ -61,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ' ' 
+SECRET_KEY = ' '
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'] 
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'api.apps.ApiConfig',
- 
+
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -215,4 +174,3 @@ AWS_SECRET_ACCESS_KEY = 'YOUR_SECRET_ACCESS_KEY_HERE'   # Edit
 AWS_STORAGE_BUCKET_NAME = 'insert-your-bucket-name-here'# Edit
 AWS_S3_REGION_NAME = 'ap-northeast-2'
 AWS_DEFAULT_ACL = None
-```
