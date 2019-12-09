@@ -89,7 +89,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:animateLayoutChanges="true"
-        android:background="#CECECE"
+        android:background="@android:color/transparent"
         android:src="@drawable/common_full_open_on_phone" />
+
 
 </LinearLayout>
