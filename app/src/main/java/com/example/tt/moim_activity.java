@@ -45,18 +45,6 @@ public class moim_activity extends Fragment {
         recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycleView.setAdapter(adapter);
 
-
-     /*   Data data = new Data();
-        data.setTitle("          피겨스케이팅 -    운동/아웃도어");
-        data.setAuthor("추천수 :" + 17);
-        // data.setUrlImage(temp.get("photo").toString());
-
-
-        adapter.addItem(data);
-
-        adapter.notifyDataSetChanged();*/
-
-
         final String url = "http://52.79.125.108/api/challenge/";
 
         try {
