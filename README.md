@@ -30,13 +30,13 @@ pip install djangorestframework==3.10.3
 (mysql version 5.7.26-log) - AWS RDS mysql default setting
 ```
 
-### settings.py 위치
+### settings.py Location
 
 ```
 TT/fastquest/settings.py
 ```
 ### settings.py 
-You should put this file in the location listed above.
+You should edit this file in the location listed above.
 The annotated section needs to be modified to use the database and image save features.
 ```
 """
